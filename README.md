@@ -1,3 +1,3 @@
-# Vier Gewinnt
+# 4 Gewinnt
 
-Das Spiel _Vier Gewinnt_ programmiert in Python.
+Das Spiel _4 Gewinnt_ programmiert in Python.
