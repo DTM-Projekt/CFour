@@ -1,10 +1,10 @@
 # Konstanten
-COLS = 10  # ANZAHL SPALTEN
-ROWS = 10  # ANZAHL ZEILEN
+COLS = 7  # ANZAHL SPALTEN
+ROWS = 6  # ANZAHL ZEILEN
 FIELDS = COLS * ROWS  # ANZAHL DER FELDER
 FIRST_FIELD = 0  # POSITION RECHTS UNTEN
 LAST_FIELD = FIELDS - 1  # POSITION LINKS OBEN
-WIN_LENGTH = 8  # WIEVIELE STEINE IN EINER REIHE GEWINNEN?
+WIN_LENGTH = 4  # WIEVIELE STEINE IN EINER REIHE GEWINNEN?
 
 # Spielfeldparameter prüfen
 if (WIN_LENGTH > COLS):
@@ -66,8 +66,3 @@ init()
 for game in win_positions:
     draw_game(game)
     print()
-
-
-# draw_game(b)
-#wp = win_positions()
-#print (wp)
