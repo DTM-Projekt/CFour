@@ -35,13 +35,13 @@ def init():
     rows_lim = ROWS-WIN_LENGTH+1
     for y in range(ROWS):
         for x in range(COLS):
+            if (y in range(rows_lim)):
+                win_positions.append(vc)
             if (x in range(cols_lim)):
                 win_positions.append(ht)
                 if (y in range(rows_lim)):
                     win_positions.append(dl)
                     win_positions.append(dr)
-            if (y in range(rows_lim)):
-                win_positions.append(vc)
             ht = ht << 1
             vc = vc << 1
             dl = dl << 1
@@ -49,8 +49,6 @@ def init():
 
 
 def draw_game(v0=0, v1=0, side=0):
-
-    # ─ │ ┌ ┐ └ ┘ ├ ┤ ┬ ┴ ┼
 
     top = '┌' + ((COLS-1) * '───┬') + '───┐'
     buttom = '└' + ((COLS-1) * '───┴') + '───┘'
@@ -65,14 +63,17 @@ def draw_game(v0=0, v1=0, side=0):
         col_str = '│'
 
         for x in x_grid:
+
             filter = 1 << (COLS - x - 1) + ((y-1) * COLS)
             col_str += ' '
+
             if (v0 & filter):
                 col_str += LETTER_0
             elif (v1 & filter):
                 col_str += LETTER_1
             else:
                 col_str += LETTER_NONE
+
             col_str += ' │'
 
         if (side == 0):
@@ -90,10 +91,10 @@ def draw_game(v0=0, v1=0, side=0):
 a = 0b011101110110101011001101101110101010110101
 b = 0b100010001001010100110010010001010101001010
 
-draw_game(a,b)
+draw_game(a, b)
 
-""" init()
+init()
 
 for game in win_positions:
     draw_game(game)
-    print() """
+#    print()
