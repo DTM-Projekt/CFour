@@ -1,13 +1,16 @@
 # CFour // Connect Four // Vier Gewinnt
+
 Das Spiel __Vier Gewinnt__ programmiert in Python.
 
 ## Quellen
+
 Allgemein
 * https://de.m.wikipedia.org/wiki/Vier_gewinnt
 * https://tromp.github.io/c4/c4.html
 * https://blog.gamesolver.org/
 
 Connect Four Solver
+* https://github.com/qu1j0t3/fhourstones
 * https://github.com/PascalPons/connect4
 
 Andere Projekte
