@@ -1,3 +1,4 @@
-# 4 Gewinnt
+# CFour // Connect Four // Vier Gewinnt
+Das Spiel __Vier Gewinnt__ programmiert in Python.
 
-Das Spiel __4 Gewinnt__ programmiert in Python.
+## Quellen
