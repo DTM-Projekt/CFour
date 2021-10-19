@@ -14,10 +14,12 @@ In der folgenden Tabelle werden solche Definitionen zusammengefasst.
 |column,<br>vertical row|Spalte|eine senkrechte Reihe des Spielfeldes|row_v|
 |diagonal|Diagonale|eine schräge Reihe des Spielfeldes|row_d1 = '/'<br>row_d2 = '\\'|
 |grid|Gitter|das originale Spielfeld|grid|
+|height|Höhe|Y-Ausdehnung des Spielfeldes|height|
 |line,<br>horizontal row|Zeile|eine waagerechte Reihe des Spielfeldes|row_h|
 |man|Stein|ein Spielstein|man|
 |men|Steine|viele Spielsteine|men|
 |row|Reihe|eine Reihe von vier Spielsteinen,<br>egal welcher Ausrichtung|row|
+|width|Breite|X-Ausdehnung des Spielfeldes|width|
 
 ## Quellen
 
