@@ -19,7 +19,8 @@ if (WIN_LENGTH > ROWS):
 win_positions = []
 
 
-def init():
+""" 
+    def init():
     ht = 1
     vc = 1
     dl = 1
@@ -45,6 +46,7 @@ def init():
             vc = vc << 1
             dl = dl << 1
             dr = dr << 1
+"""
 
 
 def draw_game(v0=0, v1=0, side=0):
