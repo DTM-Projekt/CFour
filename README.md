@@ -12,7 +12,7 @@ In der folgenden Tabelle werden solche Definitionen zusammengefasst.
 |-|-|-|-|
 |color|Farbe|mögliche Farben eines Spielsteines<br>0 = rot, 1 = gelb|color|
 |column,<br>vertical row|Spalte|eine senkrechte Reihe des Spielfeldes|row_v|
-|diagonal|Diagonale|eine schräge Reihe des Spielfeldes|slash = '/'<br>bslash = '\\'|
+|diagonal|Diagonale|eine schräge Reihe des Spielfeldes|row_d1 = '/'<br>row_d2 = '\\'|
 |grid|Gitter|das originale Spielfeld|grid|
 |line,<br>horizontal row|Zeile|eine waagerechte Reihe des Spielfeldes|row_h|
 |man|Stein|ein Spielstein|man|
