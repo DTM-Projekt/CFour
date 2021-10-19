@@ -9,14 +9,11 @@ LENGTH = 4
 SIGN = ['X', 'O', '.']
 
 # Spielfeldparameter prüfen
-if (WIN_LENGTH > COLS):
-    exit()
-
-if (WIN_LENGTH > ROWS):
+if (LENGTH > WIDTH | LENGTH > HEIGHT):
     exit()
 
 # Globale Variablen definieren
-win_positions = []
+# win_positions = []
 
 
 """ 
