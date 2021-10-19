@@ -46,41 +46,42 @@ if (LENGTH > WIDTH | LENGTH > HEIGHT):
 """
 
 
-def draw_game(v0=0, v1=0, side=0):
+def draw_game(v0=0, v1=0, side=0, topline=False):
 
-    top = '┌' + ((COLS-1) * '───┬') + '───┐'
-    buttom = '└' + ((COLS-1) * '───┴') + '───┘'
-    between = '├' + ((COLS-1) * '───┼') + '───┤'
-    x_grid = range(0, COLS, 1)
-    y_grid = range(ROWS, 0, -1)
+    top = '┌' + ((WIDTH-1) * '───┬') + '───┐'
+    buttom = '└' + ((WIDTH-1) * '───┴') + '───┘'
+    between = '├' + ((WIDTH-1) * '───┼') + '───┤'
+    x_grid = range(0, WIDTH, 1)
+    y_grid = range(HEIGHT, 0, -1)
+
+    if (topline):
+        y_grid = range(H1, 0, -1)
 
     print(top)
 
     for y in y_grid:
 
-        col_str = '│'
+        string = '│'
 
         for x in x_grid:
 
-            # x=0, y=6 COLS=7, ROWS=6
-
-            filter = 1 << y COLS*x
-
-            col_str += ' '
+            filter = 1 << (x * H1) + (y - 1)
+            string += ' '
 
             if (v0 & filter):
-                col_str += LETTER_0
+                string += SIGN[0]
             elif (v1 & filter):
-                col_str += LETTER_1
+                string += SIGN[1]
             else:
-                col_str += LETTER_NONE
+                string += SIGN[2]
 
-            col_str += ' │'
+            string += ' │'
 
         if (side == 0):
-            print(col_str)
+            print(string)
         else:
-            print(col_str[::-1])
+            print(string[::-1])
+
         if (y > 1):
             print(between)
 
