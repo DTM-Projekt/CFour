@@ -1,26 +1,23 @@
 # Konstanten
-COLS = 7  # ANZAHL SPALTEN (COLUMS)
-ROWS = 6  # ANZAHL ZEILEN
-FIELDS = COLS * ROWS  # ANZAHL DER FELDER
-FIRST_FIELD = 0  # POSITION RECHTS UNTEN
-LAST_FIELD = FIELDS - 1  # POSITION LINKS OBEN
-WIN_LENGTH = 4  # WIEVIELE STEINE IN EINER REIHE GEWINNEN?
-LETTER_0 = 'X'  # SPIELSTEIN FÜR SPIELER 0
-LETTER_1 = 'O'  # SPIELSTEIN FÜR SPIELER 1
-LETTER_NONE = ' '  # LEERES SPIELFELD
+WIDTH = 7
+HEIGHT = 6
+H1 = HEIGHT + 1
+H2 = HEIGHT + 2
+SIZE = WIDTH * HEIGHT
+S1 = WIDTH * H1
+LENGTH = 4
+SIGN = ['X', 'O', '.']
 
 # Spielfeldparameter prüfen
-if (WIN_LENGTH > COLS):
-    exit()
-
-if (WIN_LENGTH > ROWS):
+if (LENGTH > WIDTH | LENGTH > HEIGHT):
     exit()
 
 # Globale Variablen definieren
-win_positions = []
+# win_positions = []
 
 
-def init():
+""" 
+    def init():
     ht = 1
     vc = 1
     dl = 1
@@ -46,53 +43,55 @@ def init():
             vc = vc << 1
             dl = dl << 1
             dr = dr << 1
+"""
 
 
-def draw_game(v0=0, v1=0, side=0):
+def draw_game(v0=0, v1=0, side=0, topline=False):
 
-    top = '┌' + ((COLS-1) * '───┬') + '───┐'
-    buttom = '└' + ((COLS-1) * '───┴') + '───┘'
-    between = '├' + ((COLS-1) * '───┼') + '───┤'
-    x_grid = range(0, COLS, 1)
-    y_grid = range(ROWS, 0, -1)
+    top = '┌' + ((WIDTH-1) * '───┬') + '───┐'
+    buttom = '└' + ((WIDTH-1) * '───┴') + '───┘'
+    between = '├' + ((WIDTH-1) * '───┼') + '───┤'
+    x_grid = range(0, WIDTH, 1)
+    y_grid = range(HEIGHT, 0, -1)
+
+    if (topline):
+        y_grid = range(H1, 0, -1)
 
     print(top)
 
     for y in y_grid:
 
-        col_str = '│'
+        string = '│'
 
         for x in x_grid:
 
-            # x=0, y=6 COLS=7, ROWS=6
-
-            filter = 1 << y COLS*x
-
-            col_str += ' '
+            filter = 1 << (x * H1) + (y - 1)
+            string += ' '
 
             if (v0 & filter):
-                col_str += LETTER_0
+                string += SIGN[0]
             elif (v1 & filter):
-                col_str += LETTER_1
+                string += SIGN[1]
             else:
-                col_str += LETTER_NONE
+                string += SIGN[2]
 
-            col_str += ' │'
+            string += ' │'
 
         if (side == 0):
-            print(col_str)
+            print(string)
         else:
-            print(col_str[::-1])
+            print(string[::-1])
+
         if (y > 1):
             print(between)
 
     print(buttom)
 
 
-# x ..765432176543217654321765432176543217654321
-# y ..666666655555554444444333333322222221111111
+# X ..GGGGGGGFFFFFFFEEEEEEEDDDDDDDCCCCCCCBBBBBBBAAAAAAA
+# Y ..7654321765432176543217654321765432176543217654321
 
-a = 0b111111
+a = 0b0000000000000000000000000000000000000111110111111
 
 
-draw_game(a)
+draw_game(a, a, 0, topline=True)
