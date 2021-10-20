@@ -4,10 +4,7 @@ Das Spiel __Vier Gewinnt__ programmiert in Python.
 
 ## Begriffe
 
-Im Quellcode werden ausschließlich englische Begriffe verwendet.
-Desweiteren müssen die Aspekte der Spielmechanik in eindeutigen Begriffen festgesetzt werden,
-um die Lesbarkeit des Quellcodes zu sichern.
-In der folgenden Tabelle werden solche Definitionen zusammengefasst.
+Im Quellcode werden englische Bezeichner verwendet.
 |Englisch|Deutsch|Klärung|im Quellcode|
 |:-|:-|:-|:-|
 |board|Brett|das Spielfeld für "Vier Gewinnt"|board|
