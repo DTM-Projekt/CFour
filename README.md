@@ -9,16 +9,19 @@ Desweiteren müssen die Aspekte der Spielmechanik in eindeutigen Begriffen festg
 um die Lesbarkeit des Quellcodes zu sichern.
 In der folgenden Tabelle werden solche Definitionen zusammengefasst.
 |Englisch|Deutsch|Klärung|im Quellcode|
-|-|-|-|-|
-|color|Farbe|mögliche Farben eines Spielsteines<br>0 = rot, 1 = gelb|color|
-|column,<br>vertical row|Spalte|eine senkrechte Reihe des Spielfeldes|row_v|
-|diagonal|Diagonale|eine schräge Reihe des Spielfeldes|row_d1 = '/'<br>row_d2 = '\\'|
+|:-|:-|:-|:-|
+|board|Brett|das Spielfeld für "Vier Gewinnt"|board|
+|color|Farbe|mögliche Farben eines Spielsteines. 0 = rot, 1 = gelb|color|
+|diagonal row|Diagonale|eine schräge Reihe des Spielfeldes. / oder \\ |row_d1, row_d2|
 |grid|Gitter|das originale Spielfeld|grid|
 |height|Höhe|Y-Ausdehnung des Spielfeldes|height|
-|line,<br>horizontal row|Zeile|eine waagerechte Reihe des Spielfeldes|row_h|
+|horizontal row|Zeile|eine waagerechte Reihe des Spielfeldes|row_h|
 |man|Stein|ein Spielstein|man|
 |men|Steine|viele Spielsteine|men|
-|row|Reihe|eine Reihe von vier Spielsteinen,<br>egal welcher Ausrichtung|row|
+|player|Spieler|es spielen zwei Spieler gegeneinander|player|
+|row|Reihe|eine Reihe im Gitter des Spielfeldes, egal welcher Ausrichtung|row|
+|side|Seite|Sicht von vorn oder hinten auf das Spielfeld|side|
+|vertical row|Spalte|eine senkrechte Reihe des Spielfeldes (auch engl. = column)|row_v|
 |width|Breite|X-Ausdehnung des Spielfeldes|width|
 
 ## Quellen
