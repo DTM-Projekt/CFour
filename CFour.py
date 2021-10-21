@@ -44,8 +44,9 @@ if (LENGTH > WIDTH | LENGTH > HEIGHT):
             dl = dl << 1
             dr = dr << 1
 """
-
-
+def make_move(v0, row):
+    return
+    
 def draw_game(v0=0, v1=0, side=0, topline=False):
 
     top = '┌' + ((WIDTH-1) * '───┬') + '───┐'
@@ -95,3 +96,4 @@ a = 0b0000000000000000000000000000000000000111110111111
 
 
 draw_game(a, a, 0, topline=True)
+#draw_game(a, a, 0)
