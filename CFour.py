@@ -8,13 +8,12 @@ S1 = WIDTH * H1
 LENGTH = 4
 SIGN = ['X', 'O', '.']
 
+# globale Variablen
+color = [0,0]
+
 # Spielfeldparameter prüfen
 if (LENGTH > WIDTH | LENGTH > HEIGHT):
     exit()
-
-# Globale Variablen definieren
-# win_positions = []
-
 
 """ 
     def init():
@@ -44,13 +43,20 @@ if (LENGTH > WIDTH | LENGTH > HEIGHT):
             dl = dl << 1
             dr = dr << 1
 """
-def make_move(v0, row):
+def make_move(side, row):
+    men = color[0] ^ color[1]
+    row_bottom = row * H1
+
+    while (True):
+        filter = 1 << row_bottom
+        x = men & filter
+        
     return
     
-def draw_game(v0=0, v1=0, side=0, topline=False):
+def draw_game(side=0, topline=False):
 
     top = '┌' + ((WIDTH-1) * '───┬') + '───┐'
-    buttom = '└' + ((WIDTH-1) * '───┴') + '───┘'
+    bottom = '└' + ((WIDTH-1) * '───┴') + '───┘'
     between = '├' + ((WIDTH-1) * '───┼') + '───┤'
     x_grid = range(0, WIDTH, 1)
     y_grid = range(HEIGHT, 0, -1)
@@ -69,9 +75,9 @@ def draw_game(v0=0, v1=0, side=0, topline=False):
             filter = 1 << (x * H1) + (y - 1)
             string += ' '
 
-            if (v0 & filter):
+            if (color[0] & filter):
                 string += SIGN[0]
-            elif (v1 & filter):
+            elif (color[1] & filter):
                 string += SIGN[1]
             else:
                 string += SIGN[2]
@@ -86,14 +92,18 @@ def draw_game(v0=0, v1=0, side=0, topline=False):
         if (y > 1):
             print(between)
 
-    print(buttom)
+    print(bottom)
 
 
 # X ..GGGGGGGFFFFFFFEEEEEEEDDDDDDDCCCCCCCBBBBBBBAAAAAAA
 # Y ..7654321765432176543217654321765432176543217654321
 
-a = 0b0000000000000000000000000000000000000111110111111
+#color[0] = 0b0000000000000000000000000000000000000111110111111
+#color[1] = 0b0111010111011010101001011010010101101110110101001
 
+#check = color[0] & color[1]
 
-draw_game(a, a, 0, topline=True)
+draw_game(0, topline=True)
+make_move(0, 1)
+draw_game(0, topline=True)
 #draw_game(a, a, 0)
