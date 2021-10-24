@@ -7,7 +7,6 @@ Das Spiel __Vier Gewinnt__ programmiert in Python.
 Im Quellcode werden englische Bezeichner verwendet.
 |Englisch|Deutsch|Klärung|im Quellcode|
 |:-|:-|:-|:-|
-|board|Brett|das Spielfeld für "Vier Gewinnt"|board|
 |color|Farbe|mögliche Farben eines Spielsteines. 0 = rot, 1 = gelb|color|
 |diagonal row|Diagonale|eine schräge Reihe des Spielfeldes. / oder \\ |row_d1, row_d2|
 |grid|Gitter|das originale Spielfeld|grid|
