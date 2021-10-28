@@ -64,11 +64,14 @@ def make_move(side, row):
     men = color[0] ^ color[1]
     row_bottom = row * H1
 
-    while (True):
-        filter = 1 << row_bottom
-        x = men & filter
+
+def make_move(row):
+    global nplies
+    x = 1 << heights[row]
+    colors[nplies & 1] ^= x
+    heights[row] += 1
+    nplies += 1
         
-    return
     
 def draw_game(side=0, topline=False):
 
