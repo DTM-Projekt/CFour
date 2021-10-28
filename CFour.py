@@ -1,4 +1,4 @@
-# Konstanten
+ # Konstanten
 WIDTH = 7
 HEIGHT = 6
 H1 = HEIGHT + 1
@@ -6,7 +6,7 @@ H2 = HEIGHT + 2
 SIZE = WIDTH * HEIGHT
 S1 = WIDTH * H1
 LENGTH = 4
-SIGN = ['X', 'O', '.']
+SIGNS = ['X', 'O', '.']
 
 # globale Variablen
 color = [0,0]
@@ -76,11 +76,11 @@ def draw_game(side=0, topline=False):
             string += ' '
 
             if (color[0] & filter):
-                string += SIGN[0]
+                string += SIGNS[0]
             elif (color[1] & filter):
-                string += SIGN[1]
+                string += SIGNS[1]
             else:
-                string += SIGN[2]
+                string += SIGNS[2]
 
             string += ' │'
 
