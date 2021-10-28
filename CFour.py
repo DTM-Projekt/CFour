@@ -9,11 +9,23 @@ LENGTH = 4
 SIGNS = ['X', 'O', '.']
 
 # globale Variablen
-color = [0,0]
+def init():
+
+    global colors, nplies
 
 # Spielfeldparameter prüfen
 if (LENGTH > WIDTH | LENGTH > HEIGHT):
     exit()
+
+    # heights vorfüllen
+    for x in range(0, SIZE + 1, H1):
+        heights.append(x)
+
+    colors = [0, 0]
+    nplies = 0
+
+    return
+
 
 """ 
     def init():
