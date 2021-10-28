@@ -1,4 +1,4 @@
- # Konstanten
+# Konstanten
 WIDTH = 7
 HEIGHT = 6
 H1 = HEIGHT + 1
@@ -18,9 +18,9 @@ def init():
 
     global colors, nplies
 
-# Spielfeldparameter prüfen
-if (LENGTH > WIDTH | LENGTH > HEIGHT):
-    exit()
+    # Spielfeldparameter prüfen
+    if (LENGTH > WIDTH | LENGTH > HEIGHT):
+        exit()
 
     # heights vorfüllen
     for x in range(0, SIZE + 1, H1):
@@ -60,9 +60,6 @@ if (LENGTH > WIDTH | LENGTH > HEIGHT):
             dl = dl << 1
             dr = dr << 1
 """
-def make_move(side, row):
-    men = color[0] ^ color[1]
-    row_bottom = row * H1
 
 
 def make_move(row):
@@ -71,8 +68,8 @@ def make_move(row):
     colors[nplies & 1] ^= x
     heights[row] += 1
     nplies += 1
-        
-    
+
+
 def draw_game(side=0, topline=False):
 
     top = '┌' + ((WIDTH-1) * '───┬') + '───┐'
@@ -95,9 +92,9 @@ def draw_game(side=0, topline=False):
             filter = 1 << (x * H1) + (y - 1)
             string += ' '
 
-            if (color[0] & filter):
+            if (colors[0] & filter):
                 string += SIGNS[0]
-            elif (color[1] & filter):
+            elif (colors[1] & filter):
                 string += SIGNS[1]
             else:
                 string += SIGNS[2]
@@ -121,9 +118,9 @@ def draw_game(side=0, topline=False):
 #color[0] = 0b0000000000000000000000000000000000000111110111111
 #color[1] = 0b0111010111011010101001011010010101101110110101001
 
-#check = color[0] & color[1]
+init()
 
 draw_game(0, topline=True)
-make_move(0, 1)
+make_move(6)
+make_move(1)
 draw_game(0, topline=True)
-#draw_game(a, a, 0)
