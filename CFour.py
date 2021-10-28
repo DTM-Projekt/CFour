@@ -9,6 +9,11 @@ LENGTH = 4
 SIGNS = ['X', 'O', '.']
 
 # globale Variablen
+colors = [0, 0]  # Bitboards für zwei Spieler
+heights = []  # Die untersten freien Plätze pro Spalte
+nplies = 0  # Anzahl der Spielzüge
+
+
 def init():
 
     global colors, nplies
