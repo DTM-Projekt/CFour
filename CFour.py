@@ -62,6 +62,21 @@ def init():
 """
 
 
+def has_won(newboard):
+    diag1 = newboard & (newboard >> HEIGHT)
+    hori = newboard & (newboard >> H1)
+    diag2 = newboard & (newboard >> H2)
+    vert = newboard & (newboard >> 1)
+    a = (diag1 & (diag1 >> 2*HEIGHT))
+    b = (hori & (hori >> 2*H1))
+    c = (diag2 & (diag2 >> 2*H2))
+    d = (vert & (vert >> 2))
+    e = a | b | c | d
+    if (e == True):    
+        print ("Somebody won")
+    return (e)
+
+
 def make_move(row):
     global nplies
     x = 1 << heights[row]
@@ -121,6 +136,12 @@ def draw_game(side=0, topline=False):
 init()
 
 draw_game(0, topline=True)
-make_move(6)
 make_move(1)
+make_move(1)
+make_move(2)
+make_move(2)
+make_move(3)
+make_move(3)
+make_move(4)
+make_move(4)
 draw_game(0, topline=True)
