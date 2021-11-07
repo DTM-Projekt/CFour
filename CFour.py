@@ -6,7 +6,7 @@ H2 = HEIGHT + 2
 SIZE = WIDTH * HEIGHT
 S1 = WIDTH * H1
 LENGTH = 4
-SIGNS = ['X', 'O', '.']
+SIGNS = ['X', 'O', ' ']
 
 # globale Variablen
 colors = [0, 0]  # Bitboards für zwei Spieler
@@ -72,15 +72,19 @@ def has_won(newboard):
     c = (diag2 & (diag2 >> 2*H2))
     d = (vert & (vert >> 2))
     e = a | b | c | d
-    if (e == True):    
-        print ("Somebody won")
+    if (e):
+        print("Somebody won")
+    else:
+        print("Nobody won")
     return (e)
 
 
 def make_move(row):
     global nplies
     x = 1 << heights[row]
-    colors[nplies & 1] ^= x
+    side = nplies & 1
+    colors[side] ^= x
+    has_won(colors[side])
     heights[row] += 1
     nplies += 1
 
@@ -127,21 +131,19 @@ def draw_game(side=0, topline=False):
     print(bottom)
 
 
-# X ..GGGGGGGFFFFFFFEEEEEEEDDDDDDDCCCCCCCBBBBBBBAAAAAAA
-# Y ..7654321765432176543217654321765432176543217654321
+def player_move():
+    row = input("Welche Spalte? :")
+    row = int(row)
+    return(row)
 
-#color[0] = 0b0000000000000000000000000000000000000111110111111
-#color[1] = 0b0111010111011010101001011010010101101110110101001
 
 init()
 
-draw_game(0, topline=True)
-make_move(1)
-make_move(1)
-make_move(2)
-make_move(2)
-make_move(3)
-make_move(3)
-make_move(4)
-make_move(4)
-draw_game(0, topline=True)
+conti = True
+
+while(conti):
+    draw_game(0)
+    row = player_move()
+    print(row)
+    make_move(row)
+    
