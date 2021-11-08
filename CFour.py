@@ -6,7 +6,10 @@ H2 = HEIGHT + 2
 SIZE = WIDTH * HEIGHT
 S1 = WIDTH * H1
 LENGTH = 4
-SIGNS = ['X', 'O', ' ']
+SIGNS = ['x', 'o', ' ']
+PLAYERS = ['Gelb', 'Rot']
+
+PLAYERS[0]
 
 # globale Variablen
 colors = [0, 0]  # Bitboards für zwei Spieler
@@ -79,6 +82,10 @@ def has_won(newboard):
     return (e)
 
 
+def current_player():
+    return(nplies & 1)
+
+
 def make_move(row):
     global nplies
     x = 1 << heights[row]
@@ -91,6 +98,7 @@ def make_move(row):
 
 def draw_game(side=0, topline=False):
 
+    array = range(1, WIDTH + 1)
     top = '┌' + ((WIDTH-1) * '───┬') + '───┐'
     bottom = '└' + ((WIDTH-1) * '───┴') + '───┘'
     between = '├' + ((WIDTH-1) * '───┼') + '───┤'
@@ -99,7 +107,10 @@ def draw_game(side=0, topline=False):
 
     if (topline):
         y_grid = range(H1, 0, -1)
-
+    print('  ', end ='')
+    for x in array:
+        print( x,'  ', end ='')
+    print()
     print(top)
 
     for y in y_grid:
@@ -132,8 +143,10 @@ def draw_game(side=0, topline=False):
 
 
 def player_move():
-    row = input("Welche Spalte? :")
-    row = int(row)
+    print(PLAYERS[current_player()], "ist am Zug")
+
+    row = input("Spalte : ")
+    row = int(row) -1
     return(row)
 
 
@@ -146,4 +159,3 @@ while(conti):
     row = player_move()
     print(row)
     make_move(row)
-    
