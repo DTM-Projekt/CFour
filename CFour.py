@@ -160,6 +160,15 @@ def player_move():
 >>>
 """
 
+""" Liste erweitern
+>>> a=['e','E']
+>>> b=['r','R']
+>>> a.extend(b)
+>>> a
+['e', 'E', 'r', 'R']
+>>> 
+"""
+
 init()
 
 conti = True
