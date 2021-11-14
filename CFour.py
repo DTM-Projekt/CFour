@@ -150,6 +150,15 @@ def player_move():
 
     return(row)
 
+""" Zahlenliste --> Stringliste
+>>> a = [1,2,3,4]
+>>> a
+[1, 2, 3, 4]
+>>> f = lambda x: str(x)
+>>> list(map(f,a))
+['1', '2', '3', '4']
+>>>
+"""
 
 init()
 
