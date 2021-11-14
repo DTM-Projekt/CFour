@@ -9,12 +9,11 @@ LENGTH = 4
 SIGNS = ['x', 'o', ' ']
 PLAYERS = ['Gelb', 'Rot']
 
-
 # globale Variablen
 colors = [0, 0]  # Bitboards für zwei Spieler
 heights = []  # Die untersten freien Plätze pro Spalte
-nplies = 0  # Anzahl der Spielzüge
-
+nplies = 0  # Anzahl der bis jetzt getätigten Spielzüge
+player = lambda x:(nplies + 1) & 1 # player(0) => Vorhand, player(1) => Rückhand
 
 def init():
 
@@ -131,6 +130,11 @@ def draw_game(side=0, topline=False):
             print(between)
 
     print(bottom)
+    
+    """
+    >>> print("".join(map(lambda x:'  '+str(x),range(1,10))))
+      1  2  3  4  5  6  7  8  9
+    """
 
     print('  ', end='')
     for x in array:
