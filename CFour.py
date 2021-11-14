@@ -160,6 +160,10 @@ def player_move():
 >>>
 """
 
+""" Kurzform
+>>> list(map(lambda x:str(x),range(1,8)))
+"""
+
 """ Liste erweitern
 >>> a=['e','E']
 >>> b=['r','R']
