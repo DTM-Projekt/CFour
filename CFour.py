@@ -9,7 +9,6 @@ LENGTH = 4
 SIGNS = ['x', 'o', ' ']
 PLAYERS = ['Gelb', 'Rot']
 
-PLAYERS[0]
 
 # globale Variablen
 colors = [0, 0]  # Bitboards für zwei Spieler
@@ -35,7 +34,7 @@ def init():
     return
 
 
-""" 
+"""
     def init():
     ht = 1
     vc = 1
@@ -75,10 +74,6 @@ def has_won(newboard):
     c = (diag2 & (diag2 >> 2*H2))
     d = (vert & (vert >> 2))
     e = a | b | c | d
-    if (e):
-        print("Somebody won")
-    else:
-        print("Nobody won")
     return (e)
 
 
@@ -91,7 +86,6 @@ def make_move(row):
     x = 1 << heights[row]
     side = nplies & 1
     colors[side] ^= x
-    has_won(colors[side])
     heights[row] += 1
     nplies += 1
 
@@ -107,10 +101,7 @@ def draw_game(side=0, topline=False):
 
     if (topline):
         y_grid = range(H1, 0, -1)
-    print('  ', end ='')
-    for x in array:
-        print( x,'  ', end ='')
-    print()
+
     print(top)
 
     for y in y_grid:
@@ -141,12 +132,22 @@ def draw_game(side=0, topline=False):
 
     print(bottom)
 
+    print('  ', end='')
+    for x in array:
+        print(x, '  ', end='')
+    print()
+
 
 def player_move():
-    print(PLAYERS[current_player()], "ist am Zug")
+    cont = True
+    while(cont):
+        print(PLAYERS[current_player()], "ist am Zug")
+        row = input("Spalte : ")
+        row = int(row) - 1
+        whitelist = range(0, WIDTH)
+        if (row in whitelist):
+            cont = False 
 
-    row = input("Spalte : ")
-    row = int(row) -1
     return(row)
 
 
@@ -157,5 +158,4 @@ conti = True
 while(conti):
     draw_game(0)
     row = player_move()
-    print(row)
     make_move(row)
