@@ -136,10 +136,13 @@ def draw_game(side=0, topline=False):
 
 
 def player_move():
+    allowed_signs = [str(x) for x in range(1,WIDTH +1)]
     cont = True
     while(cont):
         print(PLAYERS[current_player()], "ist am Zug")
         row = input("Spalte : ")
+        if(row not in allowed_signs):
+            continue
         row = int(row) - 1
         whitelist = range(0, WIDTH)
         if (row in whitelist):
@@ -154,7 +157,7 @@ def player_move():
 [1, 2, 3, 4]
 >>> f = lambda x: str(x)
 >>> list(map(f,a))
-['1', '2', '3', '4']
+a = [1,2,3]
 >>>
 """
 
