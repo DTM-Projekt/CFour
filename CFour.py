@@ -13,7 +13,9 @@ PLAYERS = ['Gelb', 'Rot']
 colors = [0, 0]  # Bitboards für zwei Spieler
 heights = []  # Die untersten freien Plätze pro Spalte
 nplies = 0  # Anzahl der bis jetzt getätigten Spielzüge
-player = lambda x:(nplies + 1) & 1 # player(0) => Vorhand, player(1) => Rückhand
+# player(0) => Vorhand, player(1) => Rückhand
+def player(x): return (nplies + 1) & 1
+
 
 def init():
 
@@ -91,10 +93,10 @@ def make_move(row):
 
 def draw_game(side=0, topline=False):
 
-    array = range(1, WIDTH + 1)
     top = '┌' + ((WIDTH-1) * '───┬') + '───┐'
     bottom = '└' + ((WIDTH-1) * '───┴') + '───┘'
     between = '├' + ((WIDTH-1) * '───┼') + '───┤'
+    numbers = ("".join(map(lambda x: '   '+str(x), range(1, WIDTH + 1))))[1::]
     x_grid = range(0, WIDTH, 1)
     y_grid = range(HEIGHT, 0, -1)
 
@@ -130,16 +132,7 @@ def draw_game(side=0, topline=False):
             print(between)
 
     print(bottom)
-    
-    """
-    >>> print("".join(map(lambda x:'  '+str(x),range(1,10))))
-      1  2  3  4  5  6  7  8  9
-    """
-
-    print('  ', end='')
-    for x in array:
-        print(x, '  ', end='')
-    print()
+    print(numbers)
 
 
 def player_move():
@@ -150,9 +143,10 @@ def player_move():
         row = int(row) - 1
         whitelist = range(0, WIDTH)
         if (row in whitelist):
-            cont = False 
+            cont = False
 
     return(row)
+
 
 """ Zahlenliste --> Stringliste
 >>> a = [1,2,3,4]
