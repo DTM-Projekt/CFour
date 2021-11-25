@@ -7,14 +7,14 @@ SIZE = WIDTH * HEIGHT
 S1 = WIDTH * H1
 LENGTH = 4
 SIGNS = ['x', 'o', ' ']
-PLAYERS = ['Gelb', 'Rot']
+PLAYERS = ['GELB', 'ROT']
 
 # globale Variablen
 colors = [0, 0]  # Bitboards für zwei Spieler
 heights = []  # Die untersten freien Plätze pro Spalte
 nplies = 0  # Anzahl der bis jetzt getätigten Spielzüge
-# player(0) => Vorhand, player(1) => Rückhand
 def player(x): return (nplies + 1) & 1
+# player(0) => Vorhand, player(1) => Rückhand
 
 
 def init():
@@ -78,10 +78,6 @@ def has_won(newboard):
     return (e)
 
 
-def current_player():
-    return(nplies & 1)
-
-
 def make_move(row):
     global nplies
     x = 1 << heights[row]
@@ -136,13 +132,16 @@ def draw_game(side=0, topline=False):
 
 
 def player_move():
-    allowed_signs = [str(x) for x in range(1,WIDTH +1)]
+    allowed_signs = [str(x) for x in range(1, WIDTH + 1)]
+    allowed_signs.extend(['e', 'E'])
     cont = True
     while(cont):
-        print(PLAYERS[current_player()], "ist am Zug")
+        print(PLAYERS[player(0)], "ist am Zug")
         row = input("Spalte : ")
         if(row not in allowed_signs):
             continue
+        if(row in ['e', 'E']):
+            exit()
         row = int(row) - 1
         whitelist = range(0, WIDTH)
         if (row in whitelist):
@@ -182,3 +181,7 @@ while(conti):
     draw_game(0)
     row = player_move()
     make_move(row)
+    if(has_won(colors[(player(1))])):
+        draw_game(0)
+        print(PLAYERS[player(1)], "GEWINNT")
+        exit()
