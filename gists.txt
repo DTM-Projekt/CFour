@@ -1,0 +1,56 @@
+"""
+    def init():
+    ht = 1
+    vc = 1
+    dl = 1
+    dr = 1
+    for i in range(WIN_LENGTH - 1):
+        ht = (ht << 1) + 1
+        vc = (vc << COLS) + 1
+        dl = (dl << (COLS + 1)) + 1
+        dr = (dr << (COLS - 1)) + 1
+    dr = dr << (WIN_LENGTH-1)
+    cols_lim = COLS-WIN_LENGTH+1
+    rows_lim = ROWS-WIN_LENGTH+1
+    for y in range(ROWS):
+        for x in range(COLS):
+            if (y in range(rows_lim)):
+                win_positions.append(vc)
+            if (x in range(cols_lim)):
+                win_positions.append(ht)
+                if (y in range(rows_lim)):
+                    win_positions.append(dl)
+                    win_positions.append(dr)
+            ht = ht << 1
+            vc = vc << 1
+            dl = dl << 1
+            dr = dr << 1
+"""
+
+----
+
+""" Zahlenliste --> Stringliste
+>>> a = [1,2,3,4]
+>>> a
+[1, 2, 3, 4]
+>>> f = lambda x: str(x)
+>>> list(map(f,a))
+a = [1,2,3]
+>>>
+"""
+
+""" Kurzform
+>>> list(map(lambda x:str(x),range(1,8)))
+"""
+
+""" Liste erweitern
+>>> a=['e','E']
+>>> b=['r','R']
+>>> a.extend(b)
+>>> a
+['e', 'E', 'r', 'R']
+>>> 
+"""
+
+----
+
