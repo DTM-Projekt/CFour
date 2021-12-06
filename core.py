@@ -9,6 +9,7 @@ class game:
     size = int()           # Anzahl der Felder auf dem Gitter
     s1 = int()             # Anzahl der Felder einschließlich der ersten imaginären Zeile
     lowest = list()        # Die untersten freien Plätze pro Spalte als Bitwert
+    maximal = list()       # Die obersten möglichen Plätze pro Spalte als Bitwert
 
     def __init__(self, width, height):
         self.bitboards = [0, 0]
@@ -20,6 +21,7 @@ class game:
         self.s1 = self.h1 * width
         # am Anfang sind die Spielfelder der Zeile '0' leer
         self.lowest = list(range(0, self.size + 1, self.h1))
+        self.maximal = list(range(height - 1, self.size + 1, self.h1))
 
     def player(self, x):
         # player(0) gibt den Vorhandspieler zurück
@@ -27,10 +29,14 @@ class game:
         return (self.counter + x) & 1
 
     def make_move(self, row):
-        x = 1 << self.lowest[row]
-        self.bitboards[self.player(0)] |= x  # OR
-        self.lowest[row] += 1
-        self.counter += 1
+        if (self.lowest[row] < self.maximal[row]):
+            x = 1 << self.lowest[row]
+            self.bitboards[self.player(0)] |= x  # OR
+            self.lowest[row] += 1
+            self.counter += 1
+            return True
+        else:
+            return False
 
     def has_won(self, bitboard):
         diag1 = bitboard & (bitboard >> self.height)
