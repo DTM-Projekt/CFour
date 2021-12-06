@@ -28,7 +28,7 @@ class game:
 
     def make_move(self, row):
         x = 1 << self.lowest[row]
-        self.bitboards[self.player(0)] |= x  # OR
+        self.bitboards[self.player(0)] ^= x  # WARUM XOR?
         self.lowest[row] += 1
         self.counter += 1
 
