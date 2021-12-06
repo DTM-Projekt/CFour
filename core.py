@@ -1,15 +1,14 @@
 class game:
 
-    # globale Variablen
-    bb = [0, 0]   # Bitboards für zwei Spieler
-    lowest = []  # Die untersten freien Plätze pro Spalte
-    counter = 0  # Anzahl der bis jetzt getätigten Spielzüge
-    width = 0
-    height = 0
-    size = 0
-    s1 = 0
-    h1 = 0
-    h2 = 0
+    bbs = list()     # Bitboards für zwei Spieler
+    lowest = list()  # Die untersten freien Plätze pro Spalte
+    counter = int()  # Anzahl der bis jetzt getätigten Spielzüge
+    width = int()    # Breite des Spielfeldes
+    height = int()   # Höhe des Spielfeldes
+    h1 = int()       # imaginäre Zeile über dem Spielfeld
+    h2 = int()       # imaginäre zweite Zeile über dem Spielfeld
+    size = int()     # Anzahl der Felder auf dem Gitter
+    s1 = int()       # Anzahl der Felder einschließlich der ersten imaginären Zeile
 
     def __init__(self, width, height):
         self.bb = [0, 0]
@@ -23,8 +22,6 @@ class game:
         # lowest vorfüllen
         for x in range(0, self.size + 1, self.h1):
             self.lowest.append(x)
-
-        return
 
     def make_move(self, row):
         global counter
