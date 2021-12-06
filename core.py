@@ -21,10 +21,14 @@ class game:
         # am Anfang sind die Spielfelder der Zeile '0' leer
         self.lowest = list(range(0, self.size + 1, self.h1))
 
+    def player(self, x):
+        # player(0) gibt den Vorhandspieler zurück
+        # player(1) den Rückhandspieler
+        return (self.counter + x) & 1
+
     def make_move(self, row):
         x = 1 << self.lowest[row]
-        side = self.counter & 1
-        self.bitboards[side] ^= x
+        self.bitboards[self.player(0)] |= x  # OR
         self.lowest[row] += 1
         self.counter += 1
 
