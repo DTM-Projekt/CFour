@@ -1,3 +1,5 @@
+from core import game
+
 # Konstanten
 WIDTH = 7
 HEIGHT = 6
@@ -9,52 +11,11 @@ LENGTH = 4
 SIGNS = ['x', 'o', ' ']
 PLAYERS = ['GELB', 'ROT']
 
-# globale Variablen
-bb = [0, 0]   # Bitboards für zwei Spieler
-lowest = []  # Die untersten freien Plätze pro Spalte
-counter = 0  # Anzahl der bis jetzt getätigten Spielzüge
+
 def player(x): return (counter + 1) & 1
 # player(0) => Vorhand, player(1) => Rückhand
 
 
-def init():
-
-    global bb, counter
-
-    # Spielfeldparameter prüfen
-    if (LENGTH > WIDTH | LENGTH > HEIGHT):
-        exit()
-
-    # lowest vorfüllen
-    for x in range(0, SIZE + 1, H1):
-        lowest.append(x)
-
-    bb = [0, 0]
-    counter = 0
-
-    return
-
-
-def has_won(newboard):
-    diag1 = newboard & (newboard >> HEIGHT)
-    hori = newboard & (newboard >> H1)
-    diag2 = newboard & (newboard >> H2)
-    vert = newboard & (newboard >> 1)
-    a = (diag1 & (diag1 >> 2*HEIGHT))
-    b = (hori & (hori >> 2*H1))
-    c = (diag2 & (diag2 >> 2*H2))
-    d = (vert & (vert >> 2))
-    e = a | b | c | d
-    return (e)
-
-
-def make_move(row):
-    global counter
-    x = 1 << lowest[row]
-    side = counter & 1
-    bb[side] ^= x
-    lowest[row] += 1
-    counter += 1
 
 
 def draw_game(side=0, topline=False):
@@ -118,6 +79,10 @@ def player_move():
             cont = False
 
     return(row)
+
+
+g = game()
+print(g.bb)
 
 
 init()
