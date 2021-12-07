@@ -48,3 +48,38 @@ class core:
         d = (vert & (vert >> 2))
         e = a | b | c | d
         return (e)
+
+    def grid(self, side=0, topline=False, S0='x', S1='o', S2=' '):
+        top = '┌' + ((self.width-1) * '───┬') + '───┐'
+        bottom = '└' + ((self.width-1) * '───┴') + '───┘'
+        between = '├' + ((self.width-1) * '───┼') + '───┤'
+        numlist = range(1, self.width + 1)
+        # Zahl >= 10, was dann??
+        numstr = (str().join(map(lambda x: '   '+str(x), numlist)))[1::]
+        x_grid = range(0, self.width, 1)
+        y_grid = range(self.height, 0, -1)
+        gridstr = ''
+        if (topline):
+            y_grid = range(self.h1, 0, -1)
+        gridstr += top + "\n"
+        for y in y_grid:
+            string = '│'
+            for x in x_grid:
+                filter = 1 << (x * self.h1) + (y - 1)
+                string += ' '
+                if (self.bitboards[0] & filter):
+                    string += S0
+                elif (self.bitboards[1] & filter):
+                    string += S1
+                else:
+                    string += S2
+                string += ' │'
+            if (side == 0):
+                gridstr += string + "\n"
+            else:
+                gridstr += string[::-1] + "\n"
+            if (y > 1):
+                gridstr += between + "\n"
+        gridstr += bottom + "\n"
+        gridstr += numstr
+        return gridstr
