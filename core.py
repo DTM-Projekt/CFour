@@ -49,7 +49,7 @@ class core:
         e = a | b | c | d
         return (e)
 
-    def grid(self, side=0, topline=False, S0='x', S1='o', S2=' '):
+    def grid(self, topline=False, S0='x', S1='o', S2=' '):
         top = '┌' + ((self.width-1) * '───┬') + '───┐'
         bottom = '└' + ((self.width-1) * '───┴') + '───┘'
         between = '├' + ((self.width-1) * '───┼') + '───┤'
@@ -74,10 +74,7 @@ class core:
                 else:
                     string += S2
                 string += ' │'
-            if (side == 0):
-                gridstr += string + "\n"
-            else:
-                gridstr += string[::-1] + "\n"
+            gridstr += string + "\n"
             if (y > 1):
                 gridstr += between + "\n"
         gridstr += bottom + "\n"
