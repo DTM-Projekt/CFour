@@ -1,6 +1,5 @@
-class game:
-
-    bitboards = list()     # Bitboards für zwei Spieler
+class core:
+    bitboards = list()     # Speicher für Bitboards
     counter = int()        # Anzahl der bis jetzt getätigten Spielzüge
     width = int()          # Breite des Spielfeldes
     height = int()         # Höhe des Spielfeldes
