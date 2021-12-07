@@ -31,7 +31,7 @@ class game:
     def make_move(self, row):
         if (self.lowest[row] < self.maximal[row]):
             x = 1 << self.lowest[row]
-            self.bitboards[self.player(0)] |= x  # OR
+            self.bitboards[self.player(0)] ^= x  # XOR ?
             self.lowest[row] += 1
             self.counter += 1
             return True
