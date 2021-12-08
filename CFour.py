@@ -1,4 +1,4 @@
-from core import *
+from game import game
 
 G = game()
 G.make_move(1)
