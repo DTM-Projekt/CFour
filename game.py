@@ -1,17 +1,30 @@
 class core:
+    #
+    # Klasse für die Abbildung des Spieles im Speicher
+    # und die grundlegende Spielmechanik
+    #
+
+    bitboards = []  # Bitboards
+    counter = 0     # getätigte Spielzüge
+    width = 0       # Breite des Spielfeldes
+    height = 0      # Höhe des Spielfeldes
+    h1 = 0          # imaginäre Zeile über dem Spielfeld
+    h2 = 0          # imaginäre zweite Zeile über dem Spielfeld
+    size = 0        # Anzahl der Felder auf dem Spielfeld
+    s1 = 0          # Anzahl der Felder + 1 Zeile
+    lowest = []     # erster freier Platz in jeder Spalte
+    maximal = []    # letzter möglicher Platz in jeder Spalte
 
     def __init__(self, width=7, height=6):
-        self.bitboards = [0, 0]     # Bitboards
-        self.counter = 0            # getätigte Spielzüge
-        self.width = width          # Breite des Spielfeldes
-        self.height = height        # Höhe des Spielfeldes
-        self.h1 = height + 1        # imaginäre Zeile über dem Spielfeld
-        self.h2 = height + 2        # imaginäre zweite Zeile über dem Spielfeld
-        self.size = height * width  # Anzahl der Felder auf dem Spielfeld
-        self.s1 = self.h1 * width   # Anzahl der Felder + 1 Zeile
-        # erster freier Platz in jeder Spalte
+        self.bitboards = [0, 0]
+        self.counter = 0
+        self.width = width
+        self.height = height
+        self.h1 = height + 1
+        self.h2 = height + 2
+        self.size = height * width
+        self.s1 = self.h1 * width
         self.lowest = list(range(0, self.size + 1, self.h1))
-        # letzter möglicher Platze in jeder Spalte
         self.maximal = list(range(height - 1, self.size + 1, self.h1))
 
     def player(self, x):
@@ -46,11 +59,12 @@ class io:
     #
     # Klasse für Nutzererfahrungen
     #
-    signs = [' ', 'x', 'o']
-    colors = ['ROT', 'GELB']
+    signs = []   # Die Zeichen für LEER, SPIELER A und SPIELER B
+    colors = []  # Die Farben der Spielsteine für SPIELER A und SPIELER B
 
     def __init__(self):
-        pass
+        self.signs = [' ', 'x', 'o']
+        self.colors = ['ROT', 'GELB']
 
     def grid(self, topline=False):
         #
@@ -85,8 +99,8 @@ class io:
 
 class game(core, io):
     #
-    # Klasse für den Spielablauf
-    # 
+    # Klasse für den Spielablauf (Spielregeln)
+    #
 
     def __init__(self, width=7, height=6):
         core.__init__(self, width, height)
