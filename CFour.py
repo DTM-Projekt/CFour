@@ -1,12 +1,8 @@
-from core import core
+from core import *
 
-# Konstanten
-WIDTH = 7
-HEIGHT = 6
-PLAYERS = ['GELB', 'ROT']
-
-C = core(width=WIDTH, height=HEIGHT)
-print(C.grid())
+G = game()
+G.make_move(1)
+print(G.grid())
 
 
 """
