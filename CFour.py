@@ -1,4 +1,5 @@
-from core import game
+from game import *
+from io import *
 
 # Konstanten
 WIDTH = 7
