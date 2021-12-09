@@ -1,6 +1,7 @@
-from game import game
+from game import *
 
-G = game()
-G.make_move(1)
-G.make_move(2)
-print(G.grid())
+D = data()
+C = core(D)
+IO = io(D)
+
+print(IO.grid(True, ~D.top))
