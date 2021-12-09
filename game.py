@@ -15,6 +15,7 @@ class data:
     bottom = None     # Bitboard der unteren Zeile
     top = None        # Bitboard der (imaginären) Zeile über dem Spielfeld
 
+
     def __init__(self, width=7, height=6):
         self.bitboards = [0, 0]
         self.counter = 0
