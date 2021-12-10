@@ -56,7 +56,7 @@ class core:
     def switch(self):
         # Seitenwechsel durchführen
         self.data.player = int(not self.data.player)
-        return 1
+        return True
 
     def isplayable(self, v_row):
         # return self.islegal(color[nplies & 1] | ((bitboard)1 << height[col]))
