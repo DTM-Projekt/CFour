@@ -51,10 +51,7 @@ class core:
     def __init__(self, data=None):
         self.data = data
 
-    def player(self, x):
-        # player(0) gibt den Vorhandspieler zurück
-        # player(1) den Rückhandspieler
-        return (self.data.counter + x) & 1
+    # zeitkritische Methoden
 
     def islegal(self, bitboard):
         return (bitboard & self.top) == 0
@@ -70,18 +67,7 @@ class core:
         d.lowest[v_row] += 1
         d.counter += 1
 
-    def has_won(self, bitboard):
-        d = self.data
-        diag1 = bitboard & (bitboard >> d.height)
-        hori = bitboard & (bitboard >> d.h1)
-        diag2 = bitboard & (bitboard >> d.h2)
-        vert = bitboard & (bitboard >> 1)
-        a = (diag1 & (diag1 >> 2*d.height))
-        b = (hori & (hori >> 2*d.h1))
-        c = (diag2 & (diag2 >> 2*d.h2))
-        d = (vert & (vert >> 2))
-        e = a | b | c | d
-        return (e)
+    # zeitunkritische Methoden
 
 
 class io:
