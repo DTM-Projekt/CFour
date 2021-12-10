@@ -58,16 +58,29 @@ class core:
         self.data.player = int(not self.data.player)
         return True
 
-    def isplayable(self, v_row):
-        # return self.islegal(color[nplies & 1] | ((bitboard)1 << height[col]))
-        pass
+    def move(self, v_row):
+        if (v_row in self.data.playable):
+            bit = 1 << self.data.bare[v_row]
+            if (bit & self.data.rtop):
+                self.data.playable.remove(v_row)
+            self.data.bitboards[self.data.player] ^= bit  # XOR
+            self.data.bare[v_row] += 1
+            self.data.counter += 1
+            return True
+        else:
+            return False
 
-    def make_move(self, v_row):
-        d = self.data
-        x = 1 << d.lowest[v_row]
-        d.bitboards[self.player(0)] ^= x  # XOR ?
-        d.lowest[v_row] += 1
-        d.counter += 1
+    def has_won(self):
+        bb = self.data.bitboards[self.player]
+        hori = bb & (bb >> self.data.h1)
+        vert = bb & (bb >> 1)
+        diag1 = bb & (bb >> self.data.height)
+        diag2 = bb & (bb >> self.data.h2)
+        a = (hori & (hori >> 2*self.data.h1))
+        b = (vert & (vert >> 2))
+        c = (diag1 & (diag1 >> 2*self.data.height))
+        d = (diag2 & (diag2 >> 2*self.data.h2))
+        return a | b | c | d
 
     # zeitunkritische Methoden
 
