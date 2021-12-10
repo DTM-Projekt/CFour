@@ -1,3 +1,7 @@
+from sys import platform
+from subprocess import call
+
+
 class data:
     #
     # Klasse für die Abbildung des Spieles im Speicher
