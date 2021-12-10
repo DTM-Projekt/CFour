@@ -9,15 +9,18 @@ class data:
 
     bitboards = None  # Bitboards
     counter = None    # Anzahl Spielzüge
+    player = None     # Aktueller Spieler
     width = None      # Breite des Spielfeldes
     height = None     # Höhe des Spielfeldes
     h1 = None         # plus (imaginäre) Zeile über dem Spielfeld
     h2 = None         # rechter Nachbar
-    size = None       # Anzahl der Felder auf dem Spielfeld
+    size = None       # Anzahl der Spielzüge (Felder auf dem Spielfeld)
     s1 = None         # Anzahl der Felder + 1 Zeile
-    lowest = None     # erster freier Platz in jeder Spalte
+    bare = None       # erster freier Platz in jeder Spalte
     bottom = None     # Bitboard der unteren Zeile
     top = None        # Bitboard der (imaginären) Zeile über dem Spielfeld
+    rtop = None       # Bitboard der letzten realen Zeile des Spielfeldes
+    playable = None   # alle spielbaren Spalten in einer Liste
 
     def __init__(self, width=7, height=6):
         self.bitboards = [0, 0]
