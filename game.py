@@ -15,7 +15,6 @@ class data:
     bottom = None     # Bitboard der unteren Zeile
     top = None        # Bitboard der (imaginären) Zeile über dem Spielfeld
 
-
     def __init__(self, width=7, height=6):
         self.bitboards = [0, 0]
         self.counter = 0
@@ -37,7 +36,7 @@ class core:
     # Klasse für die Abbildung von Spielmechanik und Grundregeln
     #
 
-    data = None  # Zeiger Datenobjekt
+    data = None  # Zeiger auf Datenobjekt
 
     def __init__(self, data=None):
         self.data = data
@@ -48,7 +47,10 @@ class core:
         return (self.data.counter + x) & 1
 
     def islegal(self, bitboard):
-        # return (newboard & TOP) == 0
+        return (bitboard & self.top) == 0
+
+    def isplayable(self, v_row):
+        # return self.islegal(color[nplies & 1] | ((bitboard)1 << height[col]))
         pass
 
     def make_move(self, v_row):
