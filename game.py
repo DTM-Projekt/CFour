@@ -53,8 +53,10 @@ class core:
 
     # zeitkritische Methoden
 
-    def islegal(self, bitboard):
-        return (bitboard & self.top) == 0
+    def switch(self):
+        # Seitenwechsel durchführen
+        self.data.player = int(not self.data.player)
+        return 1
 
     def isplayable(self, v_row):
         # return self.islegal(color[nplies & 1] | ((bitboard)1 << height[col]))
