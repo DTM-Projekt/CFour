@@ -101,6 +101,9 @@ class screen:
         self.topline = False
 
     def clear(self):
+        #
+        # Bildschirm löschen
+        #
         if platform not in ('win32', 'cygwin'):
             command = 'clear'
         else:
