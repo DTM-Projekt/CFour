@@ -85,9 +85,9 @@ class core:
     # zeitunkritische Methoden
 
 
-class io:
+class screen:
     #
-    # Klasse für Eingaben und Ausgaben
+    # Klasse für Bildschirmausgaben
     #
     data = None     # Zeiger auf Datenobjekt
     signs = None    # Die Zeichen für LEER, SPIELER A und SPIELER B
