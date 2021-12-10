@@ -25,17 +25,20 @@ class data:
     def __init__(self, width=7, height=6):
         self.bitboards = [0, 0]
         self.counter = 0
+        self.player = 0
         self.width = width
         self.height = height
         self.h1 = height + 1
         self.h2 = height + 2
         self.size = height * width
         self.s1 = self.h1 * width
-        self.lowest = list(range(0, self.s1, self.h1))
+        self.bare = list(range(0, self.s1, self.h1))
         self.bottom = 0
-        for x in self.lowest:
+        for x in self.bare:
             self.bottom |= 1 << x
         self.top = self.bottom << self.height
+        self.rtop = self.top >> 1
+        self.playable = list(range(width))
 
 
 class core:
