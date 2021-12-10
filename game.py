@@ -100,6 +100,13 @@ class screen:
         self.colors = ['ROT', 'GELB']
         self.topline = False
 
+    def clear(self):
+        if platform not in ('win32', 'cygwin'):
+            command = 'clear'
+        else:
+            command = 'cls'
+        call(command, shell=True)
+
     def grid(self, topline=False, bitboard=None):
         #
         # Gib das Spielfeld von 'self.data' als Textgrafik zurück
