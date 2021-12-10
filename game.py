@@ -142,3 +142,10 @@ class screen:
     def set_topline(self, topline):
         # True, False
         self.topline = topline
+
+
+class keyboard:
+    #
+    # Klasse für Tastatureingaben
+    #
+    pass
