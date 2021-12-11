@@ -143,7 +143,7 @@ class screen:
         return tmp
 
 
-class keyboard:
+class keyb:
     #
     # Klasse für Tastatureingaben
     #
