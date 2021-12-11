@@ -1,6 +1,8 @@
-from sys import platform
-from subprocess import call
+import sys
+import subprocess
+import termios
 
+from pynput import keyboard
 
 class data:
     #
