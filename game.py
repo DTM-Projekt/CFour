@@ -23,6 +23,7 @@ class data:
     playable = None   # alle spielbaren Spalten in einer Liste
 
     def __init__(self, width=7, height=6):
+        # Konstruktor von Objekten der Klasse 'data'
         self.bitboards = [0, 0]
         self.counter = 0
         self.player = 0
@@ -49,9 +50,8 @@ class core:
     data = None  # Zeiger auf Datenobjekt
 
     def __init__(self, data=None):
+        # Konstruktor von Objekten der Klasse 'core'
         self.data = data
-
-    # zeitkritische Methoden
 
     def switch(self):
         # Seitenwechsel durchführen
@@ -59,14 +59,7 @@ class core:
         return True
 
     def move(self, v_row):
-        if (v_row in self.data.playable):
-            bit = 1 << self.data.bare[v_row]
-            if (bit & self.data.rtop):
-                self.data.playable.remove(v_row)
-            self.data.bitboards[self.data.player] ^= bit  # XOR
-            self.data.bare[v_row] += 1
-            self.data.counter += 1
-            return True
+        # einen Spielstein einwerfen
         else:
             return False
 
@@ -82,8 +75,6 @@ class core:
         d = (diag2 & (diag2 >> 2*self.data.h2))
         return a | b | c | d
 
-    # zeitunkritische Methoden
-
 
 class screen:
     #
@@ -95,15 +86,14 @@ class screen:
     topline = None  # imaginäre obere Zeile bei der Ausgabe beachten?
 
     def __init__(self, data):
+        # Konstruktor von Objekten der Klasse 'screen'
         self.data = data
         self.signs = [' ', 'x', 'o']
         self.colors = ['ROT', 'GELB']
         self.topline = False
 
     def clear(self):
-        #
         # Bildschirm löschen
-        #
         if platform not in ('win32', 'cygwin'):
             command = 'clear'
         else:
@@ -111,9 +101,7 @@ class screen:
         call(command, shell=True)
 
     def grid(self, topline=False, bitboard=None):
-        #
         # Gib das Spielfeld von 'self.data' als Textgrafik zurück
-        #
         if (bitboard):
             d = data(self.data.width, self.data.height)
             d.bitboards[0] = bitboard
