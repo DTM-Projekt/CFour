@@ -150,3 +150,11 @@ class keyb:
 
     def __init__(self):
         pass
+
+    def read_key(self):
+        # ein Tastaturevent lesen
+        with keyboard.Events() as events:
+            for event in events:
+                print('Received event {}'.format(event))
+                break
+        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
