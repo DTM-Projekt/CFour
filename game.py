@@ -60,8 +60,17 @@ class core:
 
     def move(self, v_row):
         # einen Spielstein einwerfen
-        else:
+        if (v_row < 0 or v_row >= self.data.width):
             return False
+        if not (v_row in self.data.playable):
+            return False
+        bit = 1 << self.data.bare[v_row]
+        if (bit & self.data.rtop):
+            self.data.playable.remove(v_row)
+        self.data.bitboards[self.data.player] ^= bit  # XOR
+        self.data.bare[v_row] += 1
+        self.data.counter += 1
+        return True
 
     def has_won(self):
         bb = self.data.bitboards[self.player]
