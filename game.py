@@ -4,6 +4,7 @@ import termios
 
 from pynput import keyboard
 
+
 class data:
     #
     # Klasse für die Abbildung des Spieles im Speicher
