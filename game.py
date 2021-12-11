@@ -140,10 +140,6 @@ class screen:
         tmp += (str().join(map(lambda x: '   '+str(x), num)))[1::]
         return tmp
 
-    def set_topline(self, topline):
-        # True, False
-        self.topline = topline
-
 
 class keyboard:
     #
