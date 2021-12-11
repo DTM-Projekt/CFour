@@ -147,4 +147,6 @@ class keyb:
     #
     # Klasse für Tastatureingaben
     #
-    pass
+
+    def __init__(self):
+        pass
