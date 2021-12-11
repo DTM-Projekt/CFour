@@ -73,6 +73,7 @@ class core:
         return True
 
     def has_won(self):
+        # auf Gewinn prüfen
         bb = self.data.bitboards[self.player]
         hori = bb & (bb >> self.data.h1)
         vert = bb & (bb >> 1)
