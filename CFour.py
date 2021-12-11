@@ -4,7 +4,10 @@ from random import *
 D = data()
 C = core(D)
 S = screen(D)
-K = keyboard()
+K = keyb()
+
+K.read_key()
+quit()
 
 S.clear()
 print(S.grid(True))
