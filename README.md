@@ -8,7 +8,7 @@ muss auf dem Zielrechner __Python__ in der __Version 3__ installiert sein.
 
 Dann werden noch einige Python-Biblitheken installiert:
 ```
-pip3 install pygame
+pip3 install pynput
 ```
 
 ## Installation des Spiels
