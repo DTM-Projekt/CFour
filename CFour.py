@@ -3,14 +3,16 @@ from random import *
 
 D = data()
 C = core(D)
-S = screen(D)
-K = keyboard()
+I = interface(D)
 
-K.read_key()
+while(C.is_playable()):
+    I.clear()
+    print(I.headline())
+    print(I.status())
+    print(I.grid())
+
+
 quit()
-
-S.clear()
-print(S.grid(True))
 
 for i in range(5000):
     print("Player", D.player, "ist am Zug")

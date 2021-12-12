@@ -26,6 +26,9 @@ class data:
 
     def __init__(self, width=7, height=6):
         # Konstruktor von Objekten der Klasse 'data'
+        if (width < 4 or width > 9 or height < 4 or height > 9):
+            print("Anzahl der Spalten und Zeilen muss im Bereich 4 bis 9 liegen")
+            sys.exit(1)
         self.bitboards = [0, 0]
         self.counter = 0
         self.player = 0
@@ -94,6 +97,25 @@ class core:
         return a | b | c | d
 
 
+class keyboard:
+    #
+    # Klasse für Tastatureingaben
+    #
+    def __init__(self):
+        pass
+
+    def read_key(self):
+        # ein Tastaturevent lesen
+        # https://stackoverflow.com/questions/63144507/how-to-clear-keyboard-event-buffer-pynput-keyboard
+        # https://pypi.org/project/pynput/
+        # https://www.delftstack.com/de/howto/python/python-detect-keypress/
+        with p_kb.Events() as events:
+            for event in events:
+                print('Received event {}'.format(event))
+                break
+        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
+
+
 class screen:
     #
     # Klasse für Bildschirmausgaben
@@ -116,6 +138,11 @@ class screen:
         else:
             command = 'cls'
         subprocess.call(command, shell=True)
+
+    def headline(self):
+        tmp = "VIER GEWINNT\n"
+        tmp += "============\n"
+        return tmp
 
     def grid(self, topline=False, bitboard=None):
         # Gib das Spielfeld von 'self.data' als Textgrafik zurück
@@ -147,30 +174,36 @@ class screen:
         tmp += (str().join(map(lambda x: '   '+str(x), num)))[1::]
         return tmp
 
+    def status(self):
+        # gib alle wichtigen Attribute des Spiels als Zeichenkette zurück
+        bbs = self.data.bitboards
+        s1 = self.data.s1
+        c = self.data.counter
+        s = self.data.size
+        tmp = ""
+        for i in range(len(bbs)):
+            tmp += "bitboards[" + str(i) + "]      = "
+            tmp += format(bbs[i], "#0"+str(s1)+"b")
+            tmp += "\n"
+        tmp += "Zug               = " + str(c) + "\n"
+        tmp += "Züge Rest         = " + str(s-c) + "\n"
+        tmp += "Aktueller Spieler = " + str(self.data.player)
+        tmp += " (" + self.colors[self.data.player] + ")\n"
+        tmp += "Freie Plätze      = " + str(self.data.bare) + "\n"
+        tmp += "Spielbare Spalten = " + str(self.data.playable)
+        return tmp
 
-class keyboard:
-    #
-    # Klasse für Tastatureingaben
-    #
-    def __init__(self):
-        pass
 
-    def read_key(self):
-        # ein Tastaturevent lesen
-        # https://stackoverflow.com/questions/63144507/how-to-clear-keyboard-event-buffer-pynput-keyboard
-        # https://pypi.org/project/pynput/
-        # https://www.delftstack.com/de/howto/python/python-detect-keypress/
-        with p_kb.Events() as events:
-            for event in events:
-                print('Received event {}'.format(event))
-                break
-        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
-
-
-class interface():
+class interface(keyboard, screen):
     #
     # Klasse für das Benutzerinterface
     #
     def __init__(self, data):
-        screen = self.screen(data)
-        keyboard = self.keyboard()
+        keyboard.__init__(self)
+        screen.__init__(self, data)
+
+    def player_next_move(self):
+        tmp = "Spieler " + self.colors[self.data.player] + " am Zug: "
+        row = input(tmp)
+        row = int(row) - 1
+
