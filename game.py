@@ -155,3 +155,12 @@ class keyboard:
                 print('Received event {}'.format(event))
                 break
         termios.tcflush(sys.stdin, termios.TCIOFLUSH)
+
+
+class interface():
+    #
+    # Klasse für das Benutzerinterface
+    #
+    def __init__(self, data):
+        screen = self.screen(data)
+        keyboard = self.keyboard()
