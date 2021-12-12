@@ -188,6 +188,13 @@ class screen:
         tmp += "Spielbare Spalten = " + str(self.core.playable)
         return tmp
 
+    def game_area(self):
+        self.clear()
+        tmp = self.headline() + "\n"
+        tmp += self.status() + "\n"
+        tmp += self.grid() + "\n"
+        return tmp
+
 
 class interface(keyboard, screen):
     #
@@ -200,15 +207,13 @@ class interface(keyboard, screen):
     def game_mode(self):
         while(self.core.is_playable()):
             pcolor = self.colors[self.core.player]
-            self.clear()
-            print(self.headline())
-            print(self.status())
-            print(self.grid())
+            print(self.game_area())
             out = "Spieler " + pcolor + " ist am Zug: "
             row = input(out)
             row = int(row)
             if self.core.move(row):
                 if (self.core.has_won()):
+                    print(self.game_area())
                     input("Spieler " + pcolor + " hat gewonnen...")
                     break
                 self.core.switch()
