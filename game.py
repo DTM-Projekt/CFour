@@ -166,8 +166,7 @@ class screen:
             if (y > 1):
                 tmp += '├' + ((c.width-1) * '───┼') + '───┤' + "\n"
         tmp += '└' + ((c.width-1) * '───┴') + '───┘' + "\n"
-        num = range(1, c.width + 1)
-        tmp += (str().join(map(lambda x: '   '+str(x), num)))[1::]
+        tmp += (str().join(map(lambda x: '   '+str(x), xgr)))[1::]
         return tmp
 
     def status(self):
