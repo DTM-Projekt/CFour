@@ -48,7 +48,6 @@ class core(data):
     #
     # Klasse für die Abbildung von Spielmechanik und Grundregeln
     #
-    data = None  # Zeiger auf Datenobjekt
 
     def __init__(self, width=7, height=6):
         # Konstruktor von Objekten der Klasse 'core'
