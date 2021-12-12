@@ -150,6 +150,9 @@ class keyboard:
 
     def read_key(self):
         # ein Tastaturevent lesen
+        # https://stackoverflow.com/questions/63144507/how-to-clear-keyboard-event-buffer-pynput-keyboard
+        # https://pypi.org/project/pynput/
+        # https://www.delftstack.com/de/howto/python/python-detect-keypress/
         with p_kb.Events() as events:
             for event in events:
                 print('Received event {}'.format(event))
