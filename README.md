@@ -6,7 +6,7 @@ Das Spiel __Vier Gewinnt__ programmiert in Python.
 Für die Ausführung des Programms __Vier Gewinnt__
 muss auf dem Zielrechner __Python__ in der __Version 3__ installiert sein.
 
-Dann werden noch einige Python-Biblitheken installiert:
+Dann werden noch einige Python-Bibliotheken installiert:
 ```
 pip3 install pynput
 ```
