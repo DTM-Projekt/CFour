@@ -197,7 +197,20 @@ class interface(keyboard, screen):
         keyboard.__init__(self)
         screen.__init__(self, core)
 
-    def player_next_move(self):
-        tmp = "Spieler " + self.colors[self.core.player] + " am Zug: "
-        row = input(tmp)
-        row = int(row) - 1
+    def game_mode(self):
+        while(self.core.is_playable()):
+            pcolor = self.colors[self.core.player]
+            self.clear()
+            print(self.headline())
+            print(self.status())
+            print(self.grid())
+            out = "Spieler " + pcolor + " ist am Zug: "
+            row = input(out)
+            row = int(row)
+            if self.core.move(row):
+                if (self.core.has_won()):
+                    input("Spieler " + pcolor + " hat gewonnen...")
+                    break
+                self.core.switch()
+            else:
+                input("Fehleingabe...")
