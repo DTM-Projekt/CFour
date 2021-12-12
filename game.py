@@ -2,7 +2,7 @@ import sys
 import subprocess
 import termios
 
-from pynput import keyboard
+from pynput import keyboard as p_kb
 
 
 class data:
@@ -141,7 +141,7 @@ class screen:
         return tmp
 
 
-class keyb:
+class keyboard:
     #
     # Klasse für Tastatureingaben
     #
@@ -150,7 +150,7 @@ class keyb:
 
     def read_key(self):
         # ein Tastaturevent lesen
-        with keyboard.Events() as events:
+        with p_kb.Events() as events:
             for event in events:
                 print('Received event {}'.format(event))
                 break

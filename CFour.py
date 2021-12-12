@@ -4,7 +4,7 @@ from random import *
 D = data()
 C = core(D)
 S = screen(D)
-K = keyb()
+K = keyboard()
 
 K.read_key()
 quit()
