@@ -26,9 +26,6 @@ class data:
 
     def __init__(self, width, height):
         # Konstruktor von Objekten der Klasse 'data'
-        if (width < 4 or width > 9 or height < 4 or height > 9):
-            print("Anzahl der Spalten und Zeilen muss im Bereich 4 bis 9 liegen")
-            sys.exit(1)
         self.bitboards = [0, 0]
         self.counter = 0
         self.player = 0
