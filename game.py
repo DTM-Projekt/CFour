@@ -73,6 +73,13 @@ class core:
         self.data.counter += 1
         return True
 
+    def is_playable(self):
+        # ist ein Zug möglich?
+        if self.data.counter >= self.data.size:
+            return False
+        else:
+            return True
+
     def has_won(self):
         # auf Gewinn prüfen
         bb = self.data.bitboards[self.player]
