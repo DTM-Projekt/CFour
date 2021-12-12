@@ -9,7 +9,6 @@ class data:
     #
     # Klasse für die Abbildung des Spieles im Speicher
     #
-
     bitboards = None  # Bitboards
     counter = None    # Anzahl Spielzüge
     player = None     # Aktueller Spieler
@@ -49,7 +48,6 @@ class core:
     #
     # Klasse für die Abbildung von Spielmechanik und Grundregeln
     #
-
     data = None  # Zeiger auf Datenobjekt
 
     def __init__(self, data=None):
@@ -96,7 +94,6 @@ class screen:
     data = None     # Zeiger auf Datenobjekt
     signs = None    # Die Zeichen für LEER, SPIELER A und SPIELER B
     colors = None   # Die Farben der Spielsteine für SPIELER A und SPIELER B
-    topline = None  # imaginäre obere Zeile bei der Ausgabe beachten?
 
     def __init__(self, data):
         # Konstruktor von Objekten der Klasse 'screen'
@@ -148,7 +145,6 @@ class keyb:
     #
     # Klasse für Tastatureingaben
     #
-
     def __init__(self):
         pass
 
