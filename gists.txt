@@ -87,5 +87,10 @@ a = [1,2,3]
 >>> 
 """
 
-----
+# Zufallszüge...
+from random import *
+for i in range(5000):
+    print("Player", C.player, "ist am Zug")
+    C.switch() if C.move(choice(D.playable if C.playable else [0])) else None
+    print(I.grid(True))
 
