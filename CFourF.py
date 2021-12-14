@@ -52,8 +52,6 @@ def game():
         d = (diag2 & (diag2 >> 2*H2))
         return a | b | c | d
 
-        a = (bb & (bb >> H1) & (bb & (bb >> H1) >> 2*H1))
-
     def grid(topline=False):
         # Gib das aktuelle Spielfeld als Textgrafik zurück
         xgr = range(0, WIDTH, 1)   # X-Grid
