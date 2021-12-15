@@ -36,17 +36,18 @@ Im Quellcode werden englische Bezeichner verwendet.
 
 ## Quellen
 
-Allgemein
+Allgemeines über das Spiel 'Vier Gewinnt'
 * https://de.m.wikipedia.org/wiki/Vier_gewinnt
 * https://tromp.github.io/c4/c4.html
 * https://blog.gamesolver.org/
 
-Connect Four Solver
+Connect Four Solver (Spieletheorie, Datenhandling)
 * https://github.com/qu1j0t3/fhourstones
 * https://github.com/PascalPons/connect4
 
-Andere Projekte
+Andere 'Vier Gewinnt' - Projekte
 * https://www.mathematik.uni-muenchen.de/~spielth/artikel/VierGewinnt.pdf
 * https://www.ke.tu-darmstadt.de/lehre/arbeiten/bachelor/2006/Baier_Hendrik.pdf
 * http://www.informatik.uni-trier.de/~fernau/DSL0607/Masterthesis-Viergewinnt.pdf
 * https://www.tobiaskohn.ch/jython/students_viergewinnt-de.html
+* https://github.com/KeithGalli/Connect4-Python
