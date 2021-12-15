@@ -22,31 +22,26 @@ YELLOW = (255, 255, 0)
 SQUARESIZE = 50
 
 
-
-
-def switch():
+def switch(player):
     # Seitenwechsel durchführen
-    global player
     player = int(not player)
 
 
-def move(v_row):
+def move(v_row, bitboards, bares, counter):
     # Einen Spielstein in den Slot 'v_row' einwerfen.
-    global bitboards, bares, counter, playables
     bitboards[player] ^= (1 << bares[v_row])  # XOR
     bares[v_row] += 1
     counter += 1
-    if (1 << bares[v_row] & TOP1):
-        playables.remove(v_row)
 
 
 def is_playable(v_row):
     # Ist der Slot 'v_row' spielbar (frei)?
-    return not bool(1 << bares[v_row] & TOP1)
+    return (1 << bares[v_row] & TOP1) == 0
 
 
-def bit(p, r, c):
-    return (bitboards[p] >> r + c * H1) & 1
+def bit(player, h_row, v_row):
+    # Ist ein bestimmter Platz belegt?
+    return bool((bitboards[player] >> h_row + v_row * H1) & 1)
 
 
 def has_won():
@@ -116,7 +111,6 @@ while True:
     player = 0
     bitboards = [0, 0]
     bares = [0, 7, 14, 21, 28, 35, 42]
-    playables = [0, 1, 2, 3, 4, 5, 6]
 
     while(counter < SIZE):
         print("\nVIER GEWINNT\n============\n" + grid())
@@ -125,12 +119,12 @@ while True:
         row = input(plr + "ist am Zug: ")
         row = int(row)
         if is_playable(row):
-            move(row)
+            move(row, bitboards, bares, counter)
             if (has_won()):
                 print("\nVIER GEWINNT\n============\n" + grid())
                 draw_board()
                 input(plr + "hat gewonnen...")
                 break
-            switch()
+            switch(player)
         else:
             input("\nFehleingabe...")
