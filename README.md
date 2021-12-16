@@ -41,7 +41,7 @@ Allgemeines über das Spiel 'Vier Gewinnt'
 * https://tromp.github.io/c4/c4.html
 * https://blog.gamesolver.org/
 
-Vier Gewinnt: Lösungsansätze (Spieltheorie, Datenhandling)
+Vier Gewinnt: Algorithmen
 * https://github.com/qu1j0t3/fhourstones
 * https://github.com/PascalPons/connect4
 
