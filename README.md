@@ -11,6 +11,16 @@ muss auf dem Zielrechner __Python__ in der __Version 3__ installiert sein.
 git clone git@github.com:DTM-Projekt/CFour.git
 ```
 
+## Spiel starten
+```
+cd CFour
+python3 ./CFour.py    # Linux, MacOS
+python .\CFour.py     # Windows
+```
+
+## Im Browser ausprobieren
+* https://replit.com/@ingank/CFour#.replit
+
 ## Begriffe
 
 Im Quellcode werden englische Bezeichner verwendet.
