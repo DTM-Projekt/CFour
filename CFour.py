@@ -5,9 +5,6 @@ Das Spiel "Vier Gewinnt" programmiert in Python
 Diese Version ist funktional.
 """
 
-import pygame
-
-
 WIDTH = 7
 HEIGHT = 6
 H1 = HEIGHT + 1
@@ -17,17 +14,10 @@ TOP1 = 283691315109952
 SIGNS = ('x', 'o', ' ')
 
 
-def switch():
-    # Seitenwechsel durchführen
-    global player
-    player = int(not player)
-
-
-def move(v_row, bitboards, bares, counter):
+def move(v_row):
     # Einen Spielstein in den Slot 'v_row' einwerfen.
-    bitboards[player] ^= (1 << bares[v_row])  # XOR
+    bitboards[counter & 1] ^= (1 << bares[v_row])  # XOR
     bares[v_row] += 1
-    counter += 1
 
 
 def is_playable(v_row):
@@ -35,14 +25,9 @@ def is_playable(v_row):
     return (1 << bares[v_row] & TOP1) == 0
 
 
-def bit(player, h_row, v_row):
-    # Ist ein bestimmter Platz belegt?
-    return bool((bitboards[player] >> h_row + v_row * H1) & 1)
-
-
 def has_won():
     # Hat der aktuelle Spieler gewonnen?
-    bb = bitboards[player]
+    bb = bitboards[counter & 1]
     hori = bb & (bb >> H1)
     vert = bb & (bb >> 1)
     diag1 = bb & (bb >> HEIGHT)
@@ -72,26 +57,21 @@ def grid(topline=False):
     return tmp
 
 
-# names = [input("Name Spieler A: "), input("Name Spieler B: ")]
 names = ['Tim', 'Ingolf']
-
-while True:
-    counter = 0
-    player = 0
-    bitboards = [0, 0]
-    bares = [0, 7, 14, 21, 28, 35, 42]
-
-    while(counter < SIZE):
-        print("\nVIER GEWINNT\n============\n" + grid())
-        plr = "\n"+names[player]+" ("+SIGNS[player]+") "
-        row = input(plr + "ist am Zug: ")
-        row = int(row)
-        if is_playable(row):
-            move(row, bitboards, bares, counter)
-            if (has_won()):
-                print("\nVIER GEWINNT\n============\n" + grid())
-                input(plr + "hat gewonnen...")
-                break
-            switch()
-        else:
-            input("\nFehleingabe...")
+counter = 0
+bitboards = [0, 0]
+bares = [0, 7, 14, 21, 28, 35, 42]
+while(counter < SIZE):
+    print("\nVIER GEWINNT\n============\n" + grid())
+    plr = "\n"+names[counter & 1]+" ("+SIGNS[counter & 1]+") "
+    row = input(plr + "ist am Zug: ")
+    row = int(row)
+    if is_playable(row):
+        move(row)
+        if (has_won()):
+            print("\nVIER GEWINNT\n============\n" + grid())
+            input(plr + "hat gewonnen...")
+            break
+        counter += 1
+    else:
+        input("\nFehleingabe...")
