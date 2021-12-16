@@ -57,7 +57,7 @@ def grid(topline=False):
     return tmp
 
 
-names = ['Tim', 'Ingolf']
+names = [input('Name des ersten Spielers: '), input('Name des zweiten Spielers: ')]
 counter = 0
 bitboards = [0, 0]
 bares = [0, 7, 14, 21, 28, 35, 42]
