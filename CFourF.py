@@ -22,13 +22,15 @@ YELLOW = (255, 255, 0)
 SQUARESIZE = 50
 
 
-def switch(player):
+def switch():
     # Seitenwechsel durchführen
+    global player
     player = int(not player)
 
 
-def move(v_row, bitboards, bares, counter):
+def move(v_row):
     # Einen Spielstein in den Slot 'v_row' einwerfen.
+    global counter
     bitboards[player] ^= (1 << bares[v_row])  # XOR
     bares[v_row] += 1
     counter += 1
@@ -119,12 +121,12 @@ while True:
         row = input(plr + "ist am Zug: ")
         row = int(row)
         if is_playable(row):
-            move(row, bitboards, bares, counter)
+            move(row)
             if (has_won()):
                 print("\nVIER GEWINNT\n============\n" + grid())
                 draw_board()
                 input(plr + "hat gewonnen...")
                 break
-            switch(player)
+            switch()
         else:
             input("\nFehleingabe...")
