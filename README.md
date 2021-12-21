@@ -21,7 +21,7 @@ python .\CFour.py     # Windows
 ## Im Browser ausprobieren
 * https://replit.com/@ingank/CFour#.replit
 
-## Begriffe
+## Begriffe die im Quellcode vorkommen
 
 Im Quellcode werden englische Bezeichner verwendet.
 |Englisch|Deutsch|Klärung|im Quellcode|
