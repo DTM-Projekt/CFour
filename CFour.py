@@ -12,6 +12,7 @@ H2 = HEIGHT + 2
 SIZE = HEIGHT * WIDTH
 TOP1 = 283691315109952
 SIGNS = ('x', 'o', ' ')
+LFs = 20 * "\n"
 
 
 def move(v_row):
@@ -23,6 +24,11 @@ def move(v_row):
 def is_playable(v_row):
     # Ist der Slot 'v_row' spielbar (frei)?
     return (1 << bares[v_row] & TOP1) == 0
+
+
+def playables():
+    # Gib eine Liste aller spielbaren Slots zurück
+    return [x for x in range(WIDTH) if is_playable(x)]
 
 
 def has_won():
@@ -57,20 +63,23 @@ def grid(topline=False):
     return tmp
 
 
-names = [input('Name des ersten Spielers: '), input('Name des zweiten Spielers: ')]
+names = ["GELB", "ROT"]
 counter = 0
 bitboards = [0, 0]
 bares = [0, 7, 14, 21, 28, 35, 42]
 while(counter < SIZE):
-    print("\nVIER GEWINNT\n============\n" + grid())
-    plr = "\n"+names[counter & 1]+" ("+SIGNS[counter & 1]+") "
-    row = input(plr + "ist am Zug: ")
-    row = int(row)
-    if is_playable(row):
-        move(row)
+    txt = LFs + "VIER GEWINNT\n============\n" + grid()
+    txt += "\n"+names[counter & 1]+" ("+SIGNS[counter & 1]+") ist am Zug."
+    txt += "\nBitte E für Spiel-ENDE oder die Ziffer unter dem gewünschten Slot eingeben"
+    txt += "\nMögliche Slots: " + str(playables()) + ": "
+    i_txt = input(txt)
+    if i_txt in ['e', 'E']:
+        exit()
+    if i_txt in [str(x) for x in playables()]:
+        move(int(i_txt))
         if (has_won()):
-            print("\nVIER GEWINNT\n============\n" + grid())
-            input(plr + "hat gewonnen...")
+            print(LFs + "VIER GEWINNT\n============\n" + grid())
+            input(names[counter & 1] + " hat gewonnen...")
             break
         counter += 1
     else:
