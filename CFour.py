@@ -2,7 +2,7 @@
 
 """
 Das Spiel "Vier Gewinnt" programmiert in Python
-Diese Version ist funktional.
+Diese Version ist funktional programmiert.
 """
 
 WIDTH = 7
