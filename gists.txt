@@ -1,5 +1,5 @@
 
-# ehem. Spielablauf
+# ehemaliger Spielablauf
 
 """
 def player_move():
