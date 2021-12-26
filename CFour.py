@@ -73,11 +73,11 @@ while(counter < SIZE):
     txt += "\n"+names[counter & 1]+" ("+SIGNS[counter & 1]+") ist am Zug."
     txt += "\nBitte E für Spiel-ENDE oder die Ziffer unter dem gewünschten Slot eingeben"
     txt += "\nMögliche Slots: " + str(playables()) + ": "
-    i_txt = input(txt)
-    if i_txt in ['e', 'E']:
-        exit()
-    if i_txt in [str(x) for x in playables()]:
-        move(int(i_txt))
+    txt = input(txt)
+    if txt in ['e', 'E']:
+        break
+    if txt in [str(x) for x in playables()]:
+        move(int(txt))
         if (has_won()):
             print(LFs + "VIER GEWINNT\n============\n" + grid())
             input(names[counter & 1] + " hat gewonnen...")
