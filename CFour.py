@@ -5,6 +5,8 @@ Das Spiel "Vier Gewinnt" programmiert in Python
 Diese Version ist funktional programmiert.
 """
 
+from random import choice
+
 WIDTH = 7
 HEIGHT = 6
 H1 = HEIGHT + 1
@@ -64,18 +66,21 @@ def grid(topline=False):
     return txt
 
 
-names = ["GELB", "ROT"]
+names = ["GELB", "AI"]
 counter = 0
 bitboards = [0, 0]
 bares = [0, 7, 14, 21, 28, 35, 42]
 while(counter < SIZE):
-    txt = LFs + "VIER GEWINNT\n============\n" + grid()
-    txt += "\n"+names[counter & 1]+" ("+SIGNS[counter & 1]+") ist am Zug."
-    txt += "\nBitte E für Spiel-ENDE oder die Ziffer unter dem gewünschten Slot eingeben"
-    txt += "\nMögliche Slots: " + str(playables()) + ": "
-    txt = input(txt)
-    if txt in ['e', 'E']:
-        break
+    if names[counter & 1] != "AI":
+        txt = LFs + "VIER GEWINNT\n============\n" + grid()
+        txt += "\n"+names[counter & 1]+" ("+SIGNS[counter & 1]+") ist am Zug."
+        txt += "\nBitte E für Spiel-ENDE oder die Ziffer unter dem gewünschten Slot eingeben"
+        txt += "\nMögliche Slots: " + str(playables()) + ": "
+        txt = input(txt)
+        if txt in ['e', 'E']:
+            break
+    else:
+        txt = str(choice(playables()))
     if txt in [str(x) for x in playables()]:
         move(int(txt))
         if (has_won()):
