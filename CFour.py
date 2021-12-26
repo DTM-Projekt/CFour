@@ -47,20 +47,21 @@ def has_won():
 
 def grid(topline=False):
     # Gib das aktuelle Spielfeld als Textgrafik zurück
-    xgr = range(0, WIDTH, 1)   # X-Grid
-    tmp = '┌' + ((WIDTH - 1) * '───┬') + '───┐' + "\n"
-    for y in range(H1, 0, -1) if topline else range(HEIGHT, 0, -1):
-        tmp += '│'
-        for x in xgr:
+    x_grid = range(0, WIDTH, 1)
+    y_grid = range(H1, 0, -1) if topline else range(HEIGHT, 0, -1)
+    txt = '┌' + ((WIDTH - 1) * '───┬') + '───┐' + "\n"
+    for y in y_grid:
+        txt += '│'
+        for x in x_grid:
             filter = 1 << (x * H1) + (y - 1)
             sign = SIGNS[2]
             sign = SIGNS[0] if bitboards[0] & filter else sign
             sign = SIGNS[1] if bitboards[1] & filter else sign
-            tmp += ' ' + sign + ' │'
-        tmp += "\n├"+((WIDTH-1)*'───┼')+'───┤'+"\n" if y > 1 else ''
-    tmp += "\n└"+((WIDTH-1)*'───┴')+'───┘'+"\n"
-    tmp += (str().join(map(lambda x: '   '+str(x), xgr)))[1::]
-    return tmp
+            txt += ' ' + sign + ' │'
+        txt += "\n├"+((WIDTH-1)*'───┼')+'───┤'+"\n" if y > 1 else ''
+    txt += "\n└"+((WIDTH-1)*'───┴')+'───┘'+"\n"
+    txt += (str().join(map(lambda x: '   '+str(x), x_grid)))[1::]
+    return txt
 
 
 names = ["GELB", "ROT"]
