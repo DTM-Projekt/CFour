@@ -12,7 +12,7 @@ H2 = HEIGHT + 2
 SIZE = HEIGHT * WIDTH
 TOP1 = 283691315109952
 SIGNS = ('x', 'o', ' ')
-LFs = 20 * "\n"
+LFs = 40 * "\n"
 
 
 def move(v_row):
