@@ -66,6 +66,9 @@ while(count < SIZE):
     txt = input(txt)
     if txt in ['e', 'E']:
         break
+    if txt in ['a', 'A']:
+        # KI wird "von Hand" gestartet
+        print("KI wird gestartet")
     if txt in [str(x) for x in playables]:
         move(int(txt))
         if (has_won(bbs[count & 1])):
