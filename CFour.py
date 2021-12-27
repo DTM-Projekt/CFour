@@ -70,6 +70,7 @@ names = ["GELB", "AI"]
 counter = 0
 bitboards = [0, 0]
 bares = [0, 7, 14, 21, 28, 35, 42]
+full = [(x + 6) for x in bares]
 while(counter < SIZE):
     if names[counter & 1] != "AI":
         txt = LFs + "VIER GEWINNT\n============\n" + grid()
