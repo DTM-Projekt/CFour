@@ -1,9 +1,7 @@
 #!/bin/env python3
 
-"""
-Das Spiel "Vier Gewinnt" programmiert in Python
-Diese Version ist funktional programmiert.
-"""
+# Das Spiel "Vier Gewinnt" programmiert in Python.
+# Diese Version ist funktional programmiert.
 
 from random import choice
 
