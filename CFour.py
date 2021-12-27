@@ -19,7 +19,7 @@ LFs = 40 * "\n"
 
 def move(v_row):
     # Einen Spielstein in den Slot 'v_row' einwerfen.
-    bitboards[counter & 1] ^= (1 << bares[v_row])  # XOR
+    bitboards[count & 1] ^= (1 << bares[v_row])  # XOR
     bares[v_row] += 1
 
 
@@ -35,7 +35,7 @@ def playables():
 
 def has_won():
     # Hat der aktuelle Spieler gewonnen?
-    bb = bitboards[counter & 1]
+    bb = bitboards[count & 1]
     hori = bb & (bb >> H1)
     vert = bb & (bb >> 1)
     diag1 = bb & (bb >> HEIGHT)
@@ -67,14 +67,14 @@ def grid(topline=False):
 
 
 names = ["GELB", "AI"]
-counter = 0
+count = 0
 bitboards = [0, 0]
 bares = [0, 7, 14, 21, 28, 35, 42]
 full = [(x + 6) for x in bares]
-while(counter < SIZE):
-    if names[counter & 1] != "AI":
+while(count < SIZE):
+    if names[count & 1] != "AI":
         txt = LFs + "VIER GEWINNT\n============\n" + grid()
-        txt += "\n"+names[counter & 1]+" ("+SIGNS[counter & 1]+") ist am Zug."
+        txt += "\n"+names[count & 1]+" ("+SIGNS[count & 1]+") ist am Zug."
         txt += "\nBitte E für Spiel-ENDE oder die Ziffer unter dem gewünschten Slot eingeben"
         txt += "\nMögliche Slots: " + str(playables()) + ": "
         txt = input(txt)
@@ -86,8 +86,8 @@ while(counter < SIZE):
         move(int(txt))
         if (has_won()):
             print(LFs + "VIER GEWINNT\n============\n" + grid())
-            input(names[counter & 1] + " hat gewonnen...")
+            input(names[count & 1] + " hat gewonnen...")
             break
-        counter += 1
+        count += 1
     else:
         input("\nFehleingabe...")
