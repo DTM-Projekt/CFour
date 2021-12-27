@@ -66,11 +66,11 @@ def grid(topline=False):
     return txt
 
 
-names = ["GELB", "AI"]
-count = 0
 bbs = [0, 0]
 bare = [0, 7, 14, 21, 28, 35, 42]
 full = [(x + 6) for x in bare]
+names = ["GELB", "AI"]
+count = 0
 while(count < SIZE):
     if names[count & 1] != "AI":
         txt = LFs + "VIER GEWINNT\n============\n" + grid()
