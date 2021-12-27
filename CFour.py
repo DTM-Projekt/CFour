@@ -19,7 +19,7 @@ LFs = 40 * "\n"
 
 def move(v_row):
     # Einen Spielstein in den Slot 'v_row' einwerfen.
-    bitboards[count & 1] ^= (1 << bares[v_row])  # XOR
+    bbs[count & 1] ^= (1 << bares[v_row])  # XOR
     bares[v_row] += 1
 
 
@@ -35,7 +35,7 @@ def playables():
 
 def has_won():
     # Hat der aktuelle Spieler gewonnen?
-    bb = bitboards[count & 1]
+    bb = bbs[count & 1]
     hori = bb & (bb >> H1)
     vert = bb & (bb >> 1)
     diag1 = bb & (bb >> HEIGHT)
@@ -57,8 +57,8 @@ def grid(topline=False):
         for x in x_grid:
             filter = 1 << (x * H1) + (y - 1)
             sign = SIGNS[2]
-            sign = SIGNS[0] if bitboards[0] & filter else sign
-            sign = SIGNS[1] if bitboards[1] & filter else sign
+            sign = SIGNS[0] if bbs[0] & filter else sign
+            sign = SIGNS[1] if bbs[1] & filter else sign
             txt += ' ' + sign + ' │'
         txt += "\n├"+((WIDTH-1)*'───┼')+'───┤'+"\n" if y > 1 else ''
     txt += "\n└"+((WIDTH-1)*'───┴')+'───┘'+"\n"
@@ -68,7 +68,7 @@ def grid(topline=False):
 
 names = ["GELB", "AI"]
 count = 0
-bitboards = [0, 0]
+bbs = [0, 0]
 bares = [0, 7, 14, 21, 28, 35, 42]
 full = [(x + 6) for x in bares]
 while(count < SIZE):
