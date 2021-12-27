@@ -70,7 +70,8 @@ while(count < SIZE):
         # KI wird "von Hand" gestartet
         print("KI wird gestartet")
     if txt in [str(x) for x in playables]:
-        move(int(txt))
+        slot = int(txt)
+        move(slot)
         if (has_won(bbs[count & 1])):
             print(LFs + "VIER GEWINNT\n============\n" + grid())
             input(names[count & 1] + " hat gewonnen...")
