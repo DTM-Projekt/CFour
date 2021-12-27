@@ -19,13 +19,13 @@ LFs = 40 * "\n"
 
 def move(v_row):
     # Einen Spielstein in den Slot 'v_row' einwerfen.
-    bbs[count & 1] ^= (1 << bares[v_row])  # XOR
-    bares[v_row] += 1
+    bbs[count & 1] ^= (1 << bare[v_row])  # XOR
+    bare[v_row] += 1
 
 
 def is_playable(v_row):
     # Ist der Slot 'v_row' spielbar (frei)?
-    return (1 << bares[v_row] & TOP1) == 0
+    return (1 << bare[v_row] & TOP1) == 0
 
 
 def playables():
@@ -69,8 +69,8 @@ def grid(topline=False):
 names = ["GELB", "AI"]
 count = 0
 bbs = [0, 0]
-bares = [0, 7, 14, 21, 28, 35, 42]
-full = [(x + 6) for x in bares]
+bare = [0, 7, 14, 21, 28, 35, 42]
+full = [(x + 6) for x in bare]
 while(count < SIZE):
     if names[count & 1] != "AI":
         txt = LFs + "VIER GEWINNT\n============\n" + grid()
