@@ -1,9 +1,7 @@
 #!/bin/env python3
 
-"""
-Das Spiel "Vier Gewinnt" programmiert in Python
-Diese Version ist funktional programmiert.
-"""
+# Das Spiel "Vier Gewinnt" programmiert in Python.
+# Diese Version ist funktional programmiert.
 
 WIDTH = 7
 HEIGHT = 6
@@ -17,23 +15,13 @@ LFs = 40 * "\n"
 
 def move(v_row):
     # Einen Spielstein in den Slot 'v_row' einwerfen.
-    bitboards[counter & 1] ^= (1 << bares[v_row])  # XOR
-    bares[v_row] += 1
+    bbs[count & 1] ^= bare[v_row]  # XOR
+    bare[v_row] <<= 1
+    lock[v_row] = bare[v_row] & TOP1
 
 
-def is_playable(v_row):
-    # Ist der Slot 'v_row' spielbar (frei)?
-    return (1 << bares[v_row] & TOP1) == 0
-
-
-def playables():
-    # Gib eine Liste aller spielbaren Slots zurück
-    return [x for x in range(WIDTH) if is_playable(x)]
-
-
-def has_won():
-    # Hat der aktuelle Spieler gewonnen?
-    bb = bitboards[counter & 1]
+def has_won(bb):
+    # Hat bb eine Gewinnposition?
     hori = bb & (bb >> H1)
     vert = bb & (bb >> 1)
     diag1 = bb & (bb >> HEIGHT)
@@ -55,8 +43,8 @@ def grid(topline=False):
         for x in x_grid:
             filter = 1 << (x * H1) + (y - 1)
             sign = SIGNS[2]
-            sign = SIGNS[0] if bitboards[0] & filter else sign
-            sign = SIGNS[1] if bitboards[1] & filter else sign
+            sign = SIGNS[0] if bbs[0] & filter else sign
+            sign = SIGNS[1] if bbs[1] & filter else sign
             txt += ' ' + sign + ' │'
         txt += "\n├"+((WIDTH-1)*'───┼')+'───┤'+"\n" if y > 1 else ''
     txt += "\n└"+((WIDTH-1)*'───┴')+'───┘'+"\n"
@@ -64,24 +52,26 @@ def grid(topline=False):
     return txt
 
 
+bbs = [0, 0]
+bare = [(1 << x) for x in [0, 7, 14, 21, 28, 35, 42]]
+lock = [0 for x in range(7)]
 names = ["GELB", "ROT"]
-counter = 0
-bitboards = [0, 0]
-bares = [0, 7, 14, 21, 28, 35, 42]
-while(counter < SIZE):
+count = 0
+while(count < SIZE):
+    playables = [x for x in range(WIDTH) if not lock[x]]
     txt = LFs + "VIER GEWINNT\n============\n" + grid()
-    txt += "\n"+names[counter & 1]+" ("+SIGNS[counter & 1]+") ist am Zug."
+    txt += "\n"+names[count & 1]+" ("+SIGNS[count & 1]+") ist am Zug."
     txt += "\nBitte E für Spiel-ENDE oder die Ziffer unter dem gewünschten Slot eingeben"
-    txt += "\nMögliche Slots: " + str(playables()) + ": "
+    txt += "\nMögliche Slots: " + str(playables) + ": "
     txt = input(txt)
     if txt in ['e', 'E']:
         break
-    if txt in [str(x) for x in playables()]:
+    if txt in [str(x) for x in playables]:
         move(int(txt))
-        if (has_won()):
+        if (has_won(bbs[count & 1])):
             print(LFs + "VIER GEWINNT\n============\n" + grid())
-            input(names[counter & 1] + " hat gewonnen...")
+            input(names[count & 1] + " hat gewonnen...")
             break
-        counter += 1
+        count += 1
     else:
         input("\nFehleingabe...")
