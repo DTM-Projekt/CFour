@@ -33,6 +33,11 @@ def has_won(bb):
     return a | b | c | d
 
 
+def legal_positions(bare):
+    # Liste mit allen möglichen Spielpositionen.
+    return [x for x in bare if not (x & TOP1)]
+
+
 def grid(topline=False):
     # Gib das aktuelle Spielfeld als Textgrafik zurück
     x_grid = range(0, WIDTH, 1)
