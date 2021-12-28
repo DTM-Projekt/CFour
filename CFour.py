@@ -103,7 +103,6 @@ def find_best_move(board: Board, max_depth: int = 8) -> Move:
 
 bbs = [0, 0]
 bare = [(1 << x) for x in [0, 7, 14, 21, 28, 35, 42]]
-lock = [0 for x in range(7)]
 names = ["GELB", "ROT"]
 count = 0
 while(count < SIZE):
