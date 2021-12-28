@@ -38,6 +38,11 @@ def legal_positions(bare):
     return [x for x in bare if not (x & TOP1)]
 
 
+def legal_slots(bare):
+    # Liste mit allen freien Slots.
+    return [x for x in range(WIDTH) if not (bare[x] & TOP1)]
+
+
 def grid(topline=False):
     # Gib das aktuelle Spielfeld als Textgrafik zurück
     x_grid = range(0, WIDTH, 1)
