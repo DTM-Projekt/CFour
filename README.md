@@ -56,3 +56,4 @@ Andere 'Vier Gewinnt' - Projekte
 * http://www.informatik.uni-trier.de/~fernau/DSL0607/Masterthesis-Viergewinnt.pdf
 * https://www.tobiaskohn.ch/jython/students_viergewinnt-de.html
 * https://github.com/KeithGalli/Connect4-Python
+* https://github.com/davecom/ClassicComputerScienceProblemsInPython/tree/master/Chapter8
