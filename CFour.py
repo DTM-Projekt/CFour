@@ -13,9 +13,14 @@ SIGNS = ('x', 'o', ' ')
 LFs = 40 * "\n"
 
 
-def move(bb, bare, slot):
+def move(bb, pos):
+    # Einen Spielstein an einer bestimmten Position platzieren.
+    return bb ^ pos  # XOR!?
+
+
+def insert(bb, bare, slot):
     # Einen Spielstein in einen Slot einwerfen.
-    bb ^= bare[slot]  # XOR!?
+    bb = move(bb, bare[slot])
     bare[slot] <<= 1
     return bb, bare
 
@@ -120,7 +125,7 @@ while(count < SIZE):
         print("KI wird gestartet")
     if txt in [str(x) for x in playables]:
         slot = int(txt)
-        bbs[player], bare = move(bbs[count & 1], bare, slot)
+        bbs[player], bare = insert(bbs[player], bare, slot)
         if (has_won(bbs[player])):
             print(LFs + "VIER GEWINNT\n============\n" + grid())
             input(names[player] + " hat gewonnen...")
