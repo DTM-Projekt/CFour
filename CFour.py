@@ -3,13 +3,12 @@
 # Das Spiel "Vier Gewinnt" programmiert in Python.
 # Diese Version ist funktional programmiert.
 
-import copy
-
 WIDTH = 7
 HEIGHT = 6
 H1 = HEIGHT + 1
 H2 = HEIGHT + 2
 SIZE = HEIGHT * WIDTH
+S1 = H1 * WIDTH
 TOP1 = 283691315109952
 SIGNS = ('x', 'o', ' ')
 NAMES = ('GELB', 'ROT')
@@ -18,6 +17,11 @@ NAMES = ('GELB', 'ROT')
 class Game():
 
     def __init__(self) -> None:
+        wp1 = [15 << y*7+x for y in range(7) for x in range(3)]        # |
+        wp2 = [2113665 << y*7+x for y in range(4) for x in range(6)]   # -
+        wp3 = [16843009 << y*7+x for y in range(4) for x in range(3)]  # /
+        wp4 = [2130440 << y*7+x for y in range(4) for x in range(3)]   # \
+        self.win_positions = [*wp1, *wp2, *wp3, *wp4]
         self.bitboards: list = [0, 0]
         self.bare:      list = [(1 << x) for x in [0, 7, 14, 21, 28, 35, 42]]
         self.count:      int = 0
@@ -53,7 +57,18 @@ class Game():
         return [x for x in range(WIDTH) if not (self.bare[x] & TOP1)]
 
     def is_draw(self) -> bool:
-        return False
+        # Ist das Spielfeld voll?
+        return self.count >= SIZE
+
+    def _count_segment(self, seg) -> tuple(int, int):
+        x1 = self.bitboards[0] & seg
+        x2 = self.bitboards[1] & seg
+        x1 = [x for x in range(S1) if (x1 << x) & 1]
+        x2 = [x for x in range(S1) if (x2 << x) & 1]
+        return len(x1), len(x2)
+
+    def _evaluate_segment(self, seg) -> float:
+        pass
 
     def evaluate(self, player) -> float:
         return 1000.0
