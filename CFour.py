@@ -115,9 +115,10 @@ lock = [0 for x in range(7)]
 names = ["GELB", "ROT"]
 count = 0
 while(count < SIZE):
-    playables = [x for x in range(WIDTH) if not lock[x]]
+    playables = legal_slots(bare)
+    player = count & 1
     txt = LFs + "VIER GEWINNT\n============\n" + grid()
-    txt += "\n"+names[count & 1]+" ("+SIGNS[count & 1]+") ist am Zug."
+    txt += "\n"+names[player]+" ("+SIGNS[player]+") ist am Zug."
     txt += "\nBitte E für Spiel-ENDE oder die Ziffer unter dem gewünschten Slot eingeben"
     txt += "\nMögliche Slots: " + str(playables) + ": "
     txt = input(txt)
@@ -128,10 +129,10 @@ while(count < SIZE):
         print("KI wird gestartet")
     if txt in [str(x) for x in playables]:
         slot = int(txt)
-        move(slot)
-        if (has_won(bbs[count & 1])):
+        bbs[player], bare = move(bbs[count & 1], bare, slot)
+        if (has_won(bbs[player])):
             print(LFs + "VIER GEWINNT\n============\n" + grid())
-            input(names[count & 1] + " hat gewonnen...")
+            input(names[player] + " hat gewonnen...")
             break
         count += 1
     else:
