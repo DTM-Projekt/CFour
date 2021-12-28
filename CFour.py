@@ -13,11 +13,11 @@ SIGNS = ('x', 'o', ' ')
 LFs = 40 * "\n"
 
 
-def move(v_row):
-    # Einen Spielstein in den Slot 'v_row' einwerfen.
-    bbs[count & 1] ^= bare[v_row]  # XOR
-    bare[v_row] <<= 1
-    lock[v_row] = bare[v_row] & TOP1
+def move(bb, bare, slot):
+    # Einen Spielstein in einen Slot einwerfen.
+    bb ^= bare[slot]  # XOR!?
+    bare[slot] <<= 1
+    return bb, bare
 
 
 def has_won(bb):
