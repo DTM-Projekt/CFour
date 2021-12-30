@@ -105,11 +105,18 @@ def find_best_move(board: Board, max_depth: int = 8) -> Move:
     return best_move
 """
 
-
+# INIT
 bbs = [0, 0]
 bare = [(1 << x) for x in [0, 7, 14, 21, 28, 35, 42]]
 names = ["GELB", "ROT"]
 count = 0
+wp1 = [15 << y*7+x for y in range(7) for x in range(3)]        # |
+wp2 = [2113665 << y*7+x for y in range(4) for x in range(6)]   # -
+wp3 = [16843009 << y*7+x for y in range(4) for x in range(3)]  # /
+wp4 = [2130440 << y*7+x for y in range(4) for x in range(3)]   # \
+win_positions = [*wp1, *wp2, *wp3, *wp4]
+
+# MAIN
 while(count < SIZE):
     playables = legal_slots(bare)
     player = count & 1
