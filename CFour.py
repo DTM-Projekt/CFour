@@ -3,9 +3,7 @@
 # Das Spiel "Vier Gewinnt" programmiert in Python.
 # Diese Version ist funktional programmiert.
 
-from typing import List
-
-
+INF = 1000000
 WIDTH = 7
 HEIGHT = 6
 H1 = HEIGHT + 1
@@ -14,7 +12,6 @@ SIZE = HEIGHT * WIDTH
 S1 = H1 * WIDTH
 TOP1 = 283691315109952
 SIGNS = ('x', 'o', ' ')
-DEPTH_MAX = 4
 
 
 def mv(bb, pos):
@@ -73,41 +70,58 @@ def is_draw(count) -> bool:
     return count >= SIZE
 
 
-def count_segment(bbs, seg) -> tuple([int, int]):
+def count_segment(bbs, seg) -> list:
     # Anzahl der jeweiligen Steine beider Farben in einer Gewinnposition.
     x1 = bbs[0] & seg
     x2 = bbs[1] & seg
-    x1 = [x for x in range(S1) if (x1 << x) & 1]
-    x2 = [x for x in range(S1) if (x2 << x) & 1]
-    return len(x1), len(x2)
+    x1 = bin(x1).count("1")
+    x2 = bin(x2).count("1")
+    return [x1, x2]
 
 
-def evaluate_segment(bbs, seg, player) -> float:
-    # Bewertung einer möglichen Gewinnposition einer bestimmten Farbe.
-    color_0, color_1 = count_segment(bbs, seg)
-    if color_0 > 0 and color_1 > 0:
-        return 0   # Neutral, wenn beide Farben vorhanden
-    count = max(color_0, color_1)
-    score: float = 0
-    if count == 2:
-        score = 1
-    elif count == 3:
-        score = 100
-    elif count == 4:
-        score = 1000000
-    if player == 0:
-        score = -score if color_0 < color_1 else score
-    else:
-        score = -score if color_1 < color_0 else score
-    return score
+def count_slot(bb, slot):
+    # Anzahl der Steine eines Bitboards in einem Slot.
+    extract = (15 << 7 * slot) & bb
+    return bin(extract).count("1")
 
 
-def evaluate(bbs, player) -> float:
-    # Bewertung der Spielposition aus Sicht einer bestimmten Farbe.
-    total: float = 0
+def evaluate_slots(bbs) -> tuple([float, float]):
+    # Bewertung des Inhalts der Slots je nach Lage.
+    bb = bbs[0]
+    x1 = count_slot(bb, 3) * 4
+    x1 += (count_slot(bb, 2) + count_slot(bb, 4)) * 3
+    x1 += (count_slot(bb, 1) + count_slot(bb, 5)) * 2
+    x1 += (count_slot(bb, 0) + count_slot(bb, 6)) * 1
+    bb = bbs[1]
+    x2 = count_slot(bb, 3) * 4
+    x2 += (count_slot(bb, 2) + count_slot(bb, 4)) * 3
+    x2 += (count_slot(bb, 1) + count_slot(bb, 5)) * 2
+    x2 += (count_slot(bb, 0) + count_slot(bb, 6)) * 1
+    return [x1/8, x2/8]
+
+
+def evaluate(bbs) -> float:
+    # Bewertung der Spielposition aus Sicht des ersten Spielers.
+    if has_won(bbs[0]):
+        return INF
+    if has_won(bbs[1]):
+        return -INF
+    (total_me, total_he) = evaluate_slots(bbs)
     for seg in win_positions:
-        total += evaluate_segment(bbs, seg, player)
-    return total
+        a, b = count_segment(bbs, seg)
+        if a > 0 and b > 0:
+            continue
+        if a == b:
+            continue
+        c = max(a, b)
+        temp = 1
+        if c == 2:
+            temp = 10
+        elif c == 3:
+            temp = 100
+        total_me += temp if a > b else 0
+        total_he += temp if b > a else 0
+    return total_me - total_he
 
 
 def player(count) -> int:
@@ -124,32 +138,41 @@ def all_win_positions(bbs) -> list:
     return awp
 
 
-def get_best_move(bbs, bare, count, depth):
-    global best_move
-    best_val = int("-10000000000")
-    moves = legal_inserts(bare)
-    for m in moves:
-        bbs_new = bbs[:]
-        bare_new = bare[:]
-        count_new = count
-        bbs_new, bare_new = insert(bbs_new, bare_new, count_new & 1, m)
-        worth = evaluate(bbs_new, count_new & 1)
-        won = True if worth < -1000000 else False
-        lost = True if worth > 1000000 else False
-        count_new += 1
-        print(grid(bbs_new))
-        if (depth < DEPTH_MAX and not won and not lost):
-            worth -= get_best_move(bbs_new, bare_new, count_new, depth+1)
-        if won:
-            if depth == 0:
-                best_move = m
-                return worth
+def best_move(bbs, bare, count, depth):
+
+    def get_best_move(bbs, bare, count, depth):
+        nonlocal best_move
+        best_val = -INF
+        moves = legal_inserts(bare)
+        for m in moves:
+            bbs_new = bbs[:]
+            bare_new = bare[:]
+            count_new = count
+            factor = -1 if count_new & 1 else 1
+            worth_before = evaluate(bbs_new) * factor
+            bbs_new, bare_new = insert(bbs_new, bare_new, count_new & 1, m)
+            count_new += 1
+            worth_after = evaluate(bbs_new) * factor
+            won = True if worth_after == INF else False
+            loose = True if worth_after == -INF else False
+            worth_change = worth_after - worth_before
+            if (depth < DEPTH_MAX and not won and not loose):
+                worth_change -= get_best_move(bbs_new, bare_new, count_new, depth+1)
+            if won:
+                if depth == 0:
+                    best_move = m
+                    return worth_change
             else:
-                if worth > best_val:
-                    best_val = worth
+                if worth_change > best_val:
+                    best_val = worth_change
                     if depth == 0:
                         best_move = m
-    return best_val
+        return best_val
+
+    best_move = -1
+    DEPTH_MAX = depth
+    worth = get_best_move(bbs, bare, count, 0)
+    return best_move
 
 
 def grid(bbs, topline=False):
@@ -188,6 +211,7 @@ while(count < SIZE):
     player = count & 1
     txt = "\nVIER GEWINNT\n============\n" + grid(bbs)
     txt += "\n"+names[player]+" ("+SIGNS[player]+") ist am Zug."
+    txt += "\nSpielauswertung: " + str(evaluate(bbs))
     txt += "\nBitte E für Spiel-ENDE oder die Ziffer unter dem gewünschten Slot eingeben"
     txt += "\nMögliche Slots: " + str(playables) + ": "
     txt = input(txt)
@@ -196,14 +220,13 @@ while(count < SIZE):
     if txt in ['a', 'A']:
         # KI wird "von Hand" gestartet
         print("KI wird gestartet")
-        best_move = 0
-        get_best_move(bbs,bare,count,0)
-        x = best_move
+        txt = str(best_move(bbs, bare, count, 5))
     if txt in [str(x) for x in playables]:
         slot = int(txt)
         bbs, bare = insert(bbs, bare, player, slot)
         if (has_won(bbs[player])):
             print("\nVIER GEWINNT\n============\n" + grid(bbs))
+            print("\nSpielauswertung: " + str(evaluate(bbs)))
             input(names[player] + " hat gewonnen...")
             print(grid(all_win_positions(bbs)))
             break
