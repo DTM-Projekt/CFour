@@ -193,7 +193,6 @@ wp2 = [2113665 << y*7+x for y in range(4) for x in range(6)]   # -
 wp3 = [16843009 << y*7+x for y in range(4) for x in range(3)]  # /
 wp4 = [2130440 << y*7+x for y in range(4) for x in range(3)]   # \
 win_positions = [*wp1, *wp2, *wp3, *wp4]
-timer_diff = 0.0
 
 # MAIN
 while(count < SIZE):
@@ -202,7 +201,6 @@ while(count < SIZE):
     txt = "\nVIER GEWINNT\n============\n" + grid(bbs)
     txt += "\n"+names[player]+" ("+SIGNS[player]+") ist am Zug."
     txt += "\nSpielauswertung: " + str(evaluate(bbs))
-    txt += "\nRechendauer: " + str(timer_diff)
     txt += "\nBitte E für Spiel-ENDE, A für Automatischer Zug "
     txt += "oder die Ziffer unter dem gewünschten Slot eingeben"
     txt += "\nMögliche Slots: " + str(playables) + ": "
@@ -212,11 +210,10 @@ while(count < SIZE):
     if txt in ['a', 'A']:
         print("KI wird gestartet")
         timer_start = timer()
-        bbs, bare = insert(bbs, bare, player, best_move(bbs, bare, count, 5))
+        txt = str(best_move(bbs, bare, count, 1))
         timer_stop = timer()
         timer_diff = timer_stop - timer_start
-        count += 1
-        continue
+        print("Rechendauer: " + str(timer_diff))
     if txt in [str(x) for x in playables]:
         slot = int(txt)
         bbs, bare = insert(bbs, bare, player, slot)
