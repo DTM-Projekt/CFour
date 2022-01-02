@@ -3,6 +3,9 @@
 # Das Spiel "Vier Gewinnt" programmiert in Python.
 # Diese Version ist funktional programmiert.
 
+from timeit import default_timer as timer
+
+
 INF = 1000000
 WIDTH = 7
 HEIGHT = 6
@@ -31,7 +34,7 @@ def move(bbs, color, pos):
 def insert(bbs, bare, color, slot):
     # Einen Spielstein
     # einer bestimmten Farbe
-    # in einen Slot einwerfen.
+    # in einen bestimmten Slot einwerfen.
     bbs = move(bbs, color, bare[slot])
     bare[slot] <<= 1
     return bbs, bare
@@ -50,13 +53,8 @@ def has_won(bb):
     return a | b | c | d
 
 
-def bb(bbs, color):
-    # Bitboard einer bestimmten Farbe
-    return bbs[color]
-
-
 def legal_moves(bare):
-    # Liste mit allen möglichen Spielpositionen.
+    # Liste mit allen möglichen nächsten Spielpositionen.
     return [x for x in bare if not (x & TOP1)]
 
 
@@ -65,13 +63,8 @@ def legal_inserts(bare):
     return [x for x in range(WIDTH) if not (bare[x] & TOP1)]
 
 
-def is_draw(count) -> bool:
-    # Ist das Spielfeld voll?
-    return count >= SIZE
-
-
 def count_segment(bbs, seg) -> list:
-    # Anzahl der jeweiligen Steine beider Farben in einer Gewinnposition.
+    # Anzahl der jeweiligen Steine beider Farben in einem Gewinnsegment.
     x1 = bbs[0] & seg
     x2 = bbs[1] & seg
     x1 = bin(x1).count("1")
@@ -124,18 +117,13 @@ def evaluate(bbs) -> float:
     return total_me - total_he
 
 
-def player(count) -> int:
-    # aktueller Spieler?
-    return count & 1
-
-
 def all_win_positions(bbs) -> list:
     # Bitboard aller gewonnen Spielpositionen
-    awp = [0, 0]
+    wp_0, wp_1, bb_0, bb_1 = (0, 0, bbs[0], bbs[1])
     for seg in win_positions:
-        awp[0] |= seg if (seg & bbs[0]) == seg else 0
-        awp[1] |= seg if (seg & bbs[1]) == seg else 0
-    return awp
+        wp_0 |= seg if (seg & bb_0) == seg else 0
+        wp_1 |= seg if (seg & bb_1) == seg else 0
+    return [wp_0, wp_1]
 
 
 def best_move(bbs, bare, count, depth):
@@ -167,6 +155,7 @@ def best_move(bbs, bare, count, depth):
                     best_val = worth_change
                     if depth == 0:
                         best_move = m
+
         return best_val
 
     best_move = -1
@@ -204,6 +193,7 @@ wp2 = [2113665 << y*7+x for y in range(4) for x in range(6)]   # -
 wp3 = [16843009 << y*7+x for y in range(4) for x in range(3)]  # /
 wp4 = [2130440 << y*7+x for y in range(4) for x in range(3)]   # \
 win_positions = [*wp1, *wp2, *wp3, *wp4]
+timer_diff = 0.0
 
 # MAIN
 while(count < SIZE):
@@ -212,15 +202,21 @@ while(count < SIZE):
     txt = "\nVIER GEWINNT\n============\n" + grid(bbs)
     txt += "\n"+names[player]+" ("+SIGNS[player]+") ist am Zug."
     txt += "\nSpielauswertung: " + str(evaluate(bbs))
-    txt += "\nBitte E für Spiel-ENDE oder die Ziffer unter dem gewünschten Slot eingeben"
+    txt += "\nRechendauer: " + str(timer_diff)
+    txt += "\nBitte E für Spiel-ENDE, A für Automatischer Zug "
+    txt += "oder die Ziffer unter dem gewünschten Slot eingeben"
     txt += "\nMögliche Slots: " + str(playables) + ": "
     txt = input(txt)
     if txt in ['e', 'E']:
         break
     if txt in ['a', 'A']:
-        # KI wird "von Hand" gestartet
         print("KI wird gestartet")
-        txt = str(best_move(bbs, bare, count, 5))
+        timer_start = timer()
+        bbs, bare = insert(bbs, bare, player, best_move(bbs, bare, count, 5))
+        timer_stop = timer()
+        timer_diff = timer_stop - timer_start
+        count += 1
+        continue
     if txt in [str(x) for x in playables]:
         slot = int(txt)
         bbs, bare = insert(bbs, bare, player, slot)
@@ -230,6 +226,7 @@ while(count < SIZE):
             input(names[player] + " hat gewonnen...")
             print(grid(all_win_positions(bbs)))
             break
+        timer_diff = 0.0
         count += 1     # switch player
     else:
         input("\nFehleingabe...")
