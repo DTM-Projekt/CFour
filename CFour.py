@@ -4,6 +4,7 @@
 # Diese Version ist funktional programmiert.
 
 from timeit import default_timer as timer
+from random import choice
 
 
 INF = 1000000
@@ -23,19 +24,20 @@ def mv(bb, pos):
     return bb ^ pos  # XOR!? ON/OFF?
 
 
-def move(bbs, color, pos):
+def move(bbs, count, pos):
     # Einen Spielstein
     # einer bestimmten Farbe
     # an einer bestimmten Position platzieren.
+    color = count & 1
     bbs[color] = mv(bbs[color], pos)
     return bbs
 
 
-def insert(bbs, bare, color, slot):
+def insert(bbs, bare, count, slot):
     # Einen Spielstein
     # einer bestimmten Farbe
     # in einen bestimmten Slot einwerfen.
-    bbs = move(bbs, color, bare[slot])
+    bbs = move(bbs, count, bare[slot])
     bare[slot] <<= 1
     return bbs, bare
 
@@ -93,8 +95,8 @@ def evaluate_slots(bbs) -> tuple([float, float]):
     return [x1/8, x2/8]
 
 
-def evaluate(bbs) -> float:
-    # Bewertung der Spielposition aus Sicht des ersten Spielers.
+def evaluate(bbs, color) -> float:
+    # Bewertung der Spielposition aus Sicht eines bestimmten Spielers.
     if has_won(bbs[0]):
         return INF
     if has_won(bbs[1]):
@@ -114,7 +116,14 @@ def evaluate(bbs) -> float:
             temp = 100
         total_me += temp if a > b else 0
         total_he += temp if b > a else 0
-    return total_me - total_he
+    total = total_me - total_he
+    total *= -1 if (color & 1) else 1
+    return total
+
+
+def sign(count):
+    # Extrahiert 1 für Spieler A und -1 für Spieler B
+    return -1 if (count & 1) else 1
 
 
 def all_win_positions(bbs) -> list:
@@ -126,42 +135,62 @@ def all_win_positions(bbs) -> list:
     return [wp_0, wp_1]
 
 
-def best_move(bbs, bare, count, depth):
+def find_best_insert(bbs, bare, count, depth):
 
-    def get_best_move(bbs, bare, count, depth):
-        nonlocal best_move
+    def maximizing(bbs, bare, count, depth):
+        if count > SIZE or depth == 0:
+            val = evaluate(bbs, orig_color)
+            return val
         best_val = -INF
-        moves = legal_inserts(bare)
-        for m in moves:
-            bbs_new = bbs[:]
-            bare_new = bare[:]
-            count_new = count
-            factor = -1 if count_new & 1 else 1
-            worth_before = evaluate(bbs_new) * factor
-            bbs_new, bare_new = insert(bbs_new, bare_new, count_new & 1, m)
-            count_new += 1
-            worth_after = evaluate(bbs_new) * factor
-            won = True if worth_after == INF else False
-            loose = True if worth_after == -INF else False
-            worth_change = worth_after - worth_before
-            if (depth < DEPTH_MAX and not won and not loose):
-                worth_change -= get_best_move(bbs_new, bare_new, count_new, depth+1)
-            if won:
-                if depth == 0:
-                    best_move = m
-                    return worth_change
-            else:
-                if worth_change > best_val:
-                    best_val = worth_change
-                    if depth == 0:
-                        best_move = m
-
+        for ins in legal_inserts(bare):
+            bbs_mem = bbs[:]
+            bare_mem = bare[:]
+            bbs_mem, bare_mem = insert(bbs_mem, bare_mem, count, ins)
+            if has_won(bbs_mem[orig_color]):
+                best_val = INF
+                continue
+            val = minimizing(bbs_mem, bare_mem, count+1, depth-1)
+            best_val = max(val, best_val)
         return best_val
 
-    best_move = -1
-    DEPTH_MAX = depth
-    worth = get_best_move(bbs, bare, count, 0)
-    return best_move
+    def minimizing(bbs, bare, count, depth):
+        if count > SIZE or depth == 0:
+            val = evaluate(bbs, orig_color)
+            return val
+        worst_val = INF
+        for ins in legal_inserts(bare):
+            bbs_mem = bbs[:]
+            bare_mem = bare[:]
+            bbs_mem, bare_mem = insert(bbs_mem, bare_mem, count, ins)
+            if has_won(bbs_mem[other_color]):
+                worst_val = -INF
+                continue
+            val = maximizing(bbs_mem, bare_mem, count+1, depth-1)
+            worst_val = min(val, worst_val)
+        return worst_val
+
+    best_ins = -1
+    best_val = -INF
+    orig_color = (count) & 1
+    other_color = int(not orig_color)
+    for minus_delta in range(depth-1):
+        for ins in legal_inserts(bare):
+            bbs_mem = bbs[:]
+            bare_mem = bare[:]
+            bbs_mem, bare_mem = insert(bbs_mem, bare_mem, count, ins)
+            if has_won(bbs_mem[other_color]):
+                best_val = INF
+                best_ins = ins
+                continue
+            val = minimizing(bbs_mem, bare_mem, count+1, depth-minus_delta)
+            if val > best_val:
+                best_val = val
+                best_ins = ins
+        if best_ins != -1:
+            break
+    if best_ins == -1:
+        best_ins = choice(legal_inserts(bare))
+    return best_ins
 
 
 def grid(bbs, topline=False):
@@ -199,8 +228,9 @@ while(count < SIZE):
     playables = legal_inserts(bare)
     player = count & 1
     txt = "\nVIER GEWINNT\n============\n" + grid(bbs)
+    txt += "\nZug: " + str(count+1)
     txt += "\n"+names[player]+" ("+SIGNS[player]+") ist am Zug."
-    txt += "\nSpielauswertung: " + str(evaluate(bbs))
+    txt += "\nSpielauswertung: " + str(evaluate(bbs, 0))
     txt += "\nBitte E für Spiel-ENDE, A für Automatischer Zug "
     txt += "oder die Ziffer unter dem gewünschten Slot eingeben"
     txt += "\nMögliche Slots: " + str(playables) + ": "
@@ -210,7 +240,7 @@ while(count < SIZE):
     if txt in ['a', 'A']:
         print("KI wird gestartet")
         timer_start = timer()
-        txt = str(best_move(bbs, bare, count, 1))
+        txt = str(find_best_insert(bbs, bare, count, 5))
         timer_stop = timer()
         timer_diff = timer_stop - timer_start
         print("Rechendauer: " + str(timer_diff))
@@ -219,7 +249,7 @@ while(count < SIZE):
         bbs, bare = insert(bbs, bare, player, slot)
         if (has_won(bbs[player])):
             print("\nVIER GEWINNT\n============\n" + grid(bbs))
-            print("\nSpielauswertung: " + str(evaluate(bbs)))
+            print("\nSpielauswertung: " + str(evaluate(bbs, 0)))
             input(names[player] + " hat gewonnen...")
             print(grid(all_win_positions(bbs)))
             break
