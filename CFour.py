@@ -61,7 +61,6 @@ while(count < SIZE):
     playables = [x for x in range(WIDTH) if not lock[x]]
     txt = LFs + "VIER GEWINNT\n============\n" + grid()
     txt += "\n"+names[count & 1]+" ("+SIGNS[count & 1]+") ist am Zug."
-    txt += "\nBitte E für Spiel-ENDE oder die Ziffer unter dem gewünschten Slot eingeben"
     txt += "\nMögliche Slots: " + str(playables) + ": "
     txt = input(txt)
     if txt in ['e', 'E']:
