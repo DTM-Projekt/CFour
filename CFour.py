@@ -136,7 +136,12 @@ def all_win_positions(bbs) -> list:
 
 
 def find_best_insert(bbs, bare, count, depth):
-
+    # Finde den 'besten' Slot für den aktuellen Spieler
+    
+    # Ich habe den MiniMax-Algorithmus auf zwei unabhängige,
+    # sich gegenseitig rekursiv aufrufende Funktionen aufgeteilt.
+    # So wird eine if-Clause während der Laufzeit eingespart.
+    # Der Nachteil ist ein (etwas) aufgeblähter Code.
     def maximizing(bbs, bare, count, depth):
         if count > SIZE or depth == 0:
             val = evaluate(bbs, orig_color)
