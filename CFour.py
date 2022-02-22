@@ -37,11 +37,10 @@ def move(bb, pos):
 
 def insert(bbs, bare, count, slot):
     # Einen Spielstein
-    # einer bestimmten Farbe
+    # des aktuellen Spielers (Vorhand)
     # in einen bestimmten Slot einwerfen.
-    bbs = move(bbs, count, bare[slot])
+    bbs[me(count)] = bbs[me(count)] | bare[slot]
     bare[slot] <<= 1
-    return bbs, bare
 
 
 def has_won(bb):
@@ -152,7 +151,7 @@ def find_best_insert(bbs, bare, count, depth):
         for ins in legal_inserts(bare):
             bbs_mem = bbs[:]
             bare_mem = bare[:]
-            bbs_mem, bare_mem = insert(bbs_mem, bare_mem, count, ins)
+            insert(bbs_mem, bare_mem, count, ins)
             if has_won(bbs_mem[orig_color]):
                 best_val = INF
                 continue
@@ -168,7 +167,7 @@ def find_best_insert(bbs, bare, count, depth):
         for ins in legal_inserts(bare):
             bbs_mem = bbs[:]
             bare_mem = bare[:]
-            bbs_mem, bare_mem = insert(bbs_mem, bare_mem, count, ins)
+            insert(bbs_mem, bare_mem, count, ins)
             if has_won(bbs_mem[other_color]):
                 worst_val = -INF
                 continue
@@ -184,7 +183,7 @@ def find_best_insert(bbs, bare, count, depth):
         for ins in legal_inserts(bare):
             bbs_mem = bbs[:]
             bare_mem = bare[:]
-            bbs_mem, bare_mem = insert(bbs_mem, bare_mem, count, ins)
+            insert(bbs_mem, bare_mem, count, ins)
             if has_won(bbs_mem[other_color]):
                 best_val = INF
                 best_ins = ins
@@ -253,7 +252,7 @@ while(count < SIZE):
         print("Rechendauer: " + str(timer_diff))
     if txt in [str(x) for x in playables]:
         slot = int(txt)
-        bbs, bare = insert(bbs, bare, player, slot)
+        insert(bbs, bare, player, slot)
         if (has_won(bbs[player])):
             print("\nVIER GEWINNT\n============\n" + grid(bbs))
             print("\nSpielauswertung: " + str(evaluate(bbs, 0)))
