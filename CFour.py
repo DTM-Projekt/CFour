@@ -20,13 +20,14 @@ SIGNS = ('x', 'o', ' ')
 
 def mv(bb, pos):
     # Einen Spielstein
-    # an einer bestimmten Position platzieren.
-    return bb ^ pos  # XOR!? ON/OFF?
+    # an einer bestimmten Position eines Bitboards
+    # platzieren oder, wenn vorhanden, entfernen.
+    return bb ^ pos
 
 
 def move(bbs, count, pos):
     # Einen Spielstein
-    # einer bestimmten Farbe
+    # des aktuellen Spielers (Vorhand)
     # an einer bestimmten Position platzieren.
     color = count & 1
     bbs[color] = mv(bbs[color], pos)
