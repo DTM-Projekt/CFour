@@ -126,6 +126,16 @@ def sign(count):
     return -1 if (count & 1) else 1
 
 
+def me(count):
+    # Spieler am Zug (Vorhand)
+    return count & 1
+
+
+def you(count):
+    # Wartender Spieler (Nachhand)
+    return int(not(count & 1))
+
+
 def all_win_positions(bbs) -> list:
     # Bitboard aller gewonnen Spielpositionen
     wp_0, wp_1, bb_0, bb_1 = (0, 0, bbs[0], bbs[1])
@@ -137,7 +147,7 @@ def all_win_positions(bbs) -> list:
 
 def find_best_insert(bbs, bare, count, depth):
     # Finde den 'besten' Slot für den aktuellen Spieler
-    
+
     # Ich habe den MiniMax-Algorithmus auf zwei unabhängige,
     # sich gegenseitig rekursiv aufrufende Funktionen aufgeteilt.
     # So wird eine if-Clause während der Laufzeit eingespart.
