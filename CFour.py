@@ -18,6 +18,16 @@ TOP1 = 283691315109952
 SIGNS = ('x', 'o', ' ')
 
 
+def me(count):
+    # Spieler am Zug (Vorhand)
+    return count & 1
+
+
+def you(count):
+    # Wartender Spieler (Nachhand)
+    return (count & 1) ^ 1
+
+
 def mv(bb, pos):
     # Einen Spielstein
     # an einer bestimmten Position eines Bitboards
@@ -125,16 +135,6 @@ def evaluate(bbs, color) -> float:
 def sign(count):
     # Extrahiert 1 für Spieler A und -1 für Spieler B
     return -1 if (count & 1) else 1
-
-
-def me(count):
-    # Spieler am Zug (Vorhand)
-    return count & 1
-
-
-def you(count):
-    # Wartender Spieler (Nachhand)
-    return (count & 1) ^ 1
 
 
 def all_win_positions(bbs) -> list:
