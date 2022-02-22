@@ -28,7 +28,7 @@ def you(count):
     return (count & 1) ^ 1
 
 
-def mv(bb, pos):
+def move(bb, pos):
     # Einen Spielstein
     # an einer bestimmten Position eines Bitboards
     # platzieren oder, wenn vorhanden, entfernen.
