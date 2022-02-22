@@ -133,7 +133,7 @@ def me(count):
 
 def you(count):
     # Wartender Spieler (Nachhand)
-    return int(not(count & 1))
+    return (count & 1) ^ 1
 
 
 def all_win_positions(bbs) -> list:
