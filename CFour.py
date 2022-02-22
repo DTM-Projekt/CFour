@@ -35,15 +35,6 @@ def mv(bb, pos):
     return bb ^ pos
 
 
-def move(bbs, count, pos):
-    # Einen Spielstein
-    # des aktuellen Spielers (Vorhand)
-    # an einer bestimmten Position platzieren.
-    color = count & 1
-    bbs[color] = mv(bbs[color], pos)
-    return bbs
-
-
 def insert(bbs, bare, count, slot):
     # Einen Spielstein
     # einer bestimmten Farbe
