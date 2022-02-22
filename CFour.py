@@ -3,10 +3,11 @@
 # Das Spiel "Vier Gewinnt" programmiert in Python.
 # Diese Version ist funktional programmiert.
 
+from select import select
 from timeit import default_timer as timer
 from random import choice
 
-
+# Konstanten
 INF = 1000000
 WIDTH = 7
 HEIGHT = 6
@@ -16,31 +17,33 @@ SIZE = HEIGHT * WIDTH
 S1 = H1 * WIDTH
 TOP1 = 283691315109952
 SIGNS = ('x', 'o', ' ')
+DEPTH = 5
+
+# Globale Variablen
+count = 0
+me = 0
+you = 1
+bbs = [0, 0]
+bare = [(1 << x) for x in [0, 7, 14, 21, 28, 35, 42]]
+names = ["GELB", "ROT"]
+wp1 = [15 << y*7+x for y in range(7) for x in range(3)]        # |
+wp2 = [2113665 << y*7+x for y in range(4) for x in range(6)]   # -
+wp3 = [16843009 << y*7+x for y in range(4) for x in range(3)]  # /
+wp4 = [2130440 << y*7+x for y in range(4) for x in range(3)]   # \
+win_positions = [*wp1, *wp2, *wp3, *wp4]
 
 
-def me(count):
-    # Spieler am Zug (Vorhand)
-    return count & 1
-
-
-def you(count):
-    # Wartender Spieler (Nachhand)
-    return (count & 1) ^ 1
-
-
-def move(bb, pos):
+def move(bbs, bare, me, slot):
     # Einen Spielstein
-    # an einer bestimmten Position eines Bitboards
-    # platzieren oder, wenn vorhanden, entfernen.
-    return bb ^ pos
-
-
-def insert(bbs, bare, count, slot):
-    # Einen Spielstein
-    # des aktuellen Spielers (Vorhand)
+    # des aktuellen Spielers (me)
     # in einen bestimmten Slot einwerfen.
-    bbs[me(count)] = bbs[me(count)] | bare[slot]
+    bbs[me] = bbs[me] ^ bare[slot]
     bare[slot] <<= 1
+
+
+def legal_moves(bare):
+    # Liste mit allen freien Slots.
+    return [x for x in range(WIDTH) if not (bare[x] & TOP1)]
 
 
 def has_won(bb):
@@ -54,16 +57,6 @@ def has_won(bb):
     c = (diag1 & (diag1 >> 2*HEIGHT))
     d = (diag2 & (diag2 >> 2*H2))
     return a | b | c | d
-
-
-def legal_moves(bare):
-    # Liste mit allen möglichen nächsten Spielpositionen.
-    return [x for x in bare if not (x & TOP1)]
-
-
-def legal_inserts(bare):
-    # Liste mit allen freien Slots.
-    return [x for x in range(WIDTH) if not (bare[x] & TOP1)]
 
 
 def count_segment(bbs, seg) -> list:
@@ -122,11 +115,6 @@ def evaluate(bbs, color) -> float:
     return total
 
 
-def sign(count):
-    # Extrahiert 1 für Spieler A und -1 für Spieler B
-    return -1 if (count & 1) else 1
-
-
 def all_win_positions(bbs) -> list:
     # Bitboard aller gewonnen Spielpositionen
     wp_0, wp_1, bb_0, bb_1 = (0, 0, bbs[0], bbs[1])
@@ -136,67 +124,68 @@ def all_win_positions(bbs) -> list:
     return [wp_0, wp_1]
 
 
-def find_best_insert(bbs, bare, count, depth):
-    # Finde den 'besten' Slot für den aktuellen Spieler
-
+def find_best_move(bbs, bare, count):
+    # Finde den 'besten' Slot für den aktuellen Spieler.
     # Ich habe den MiniMax-Algorithmus auf zwei unabhängige,
     # sich gegenseitig rekursiv aufrufende Funktionen aufgeteilt.
     # So wird eine if-Clause während der Laufzeit eingespart.
     # Der Nachteil ist ein (etwas) aufgeblähter Code.
     def maximizing(bbs, bare, count, depth):
         if count > SIZE or depth == 0:
-            val = evaluate(bbs, orig_color)
+            val = evaluate(bbs, me)
             return val
         best_val = -INF
-        for ins in legal_inserts(bare):
+        for mov in legal_moves(bare):
             bbs_mem = bbs[:]
             bare_mem = bare[:]
-            insert(bbs_mem, bare_mem, count, ins)
-            if has_won(bbs_mem[orig_color]):
+            move(bbs_mem, bare_mem, me, mov)
+            if has_won(bbs_mem[me]):
                 best_val = INF
-                continue
+                break
+            # vierter, sechster, achter, ... Halbzug
             val = minimizing(bbs_mem, bare_mem, count+1, depth-1)
             best_val = max(val, best_val)
         return best_val
 
     def minimizing(bbs, bare, count, depth):
         if count > SIZE or depth == 0:
-            val = evaluate(bbs, orig_color)
+            val = evaluate(bbs, me)
             return val
         worst_val = INF
-        for ins in legal_inserts(bare):
+        for mov in legal_moves(bare):
             bbs_mem = bbs[:]
             bare_mem = bare[:]
-            insert(bbs_mem, bare_mem, count, ins)
-            if has_won(bbs_mem[other_color]):
+            move(bbs_mem, bare_mem, you, mov)
+            if has_won(bbs_mem[you]):
                 worst_val = -INF
-                continue
+                break
+            # dritter, fünfter, siebter, ... Halbzug
             val = maximizing(bbs_mem, bare_mem, count+1, depth-1)
             worst_val = min(val, worst_val)
         return worst_val
 
-    best_ins = -1
+    best_mov = -1
     best_val = -INF
-    orig_color = (count) & 1
-    other_color = int(not orig_color)
-    for minus_delta in range(depth-1):
-        for ins in legal_inserts(bare):
-            bbs_mem = bbs[:]
-            bare_mem = bare[:]
-            insert(bbs_mem, bare_mem, count, ins)
-            if has_won(bbs_mem[other_color]):
-                best_val = INF
-                best_ins = ins
-                continue
-            val = minimizing(bbs_mem, bare_mem, count+1, depth-minus_delta)
-            if val > best_val:
-                best_val = val
-                best_ins = ins
-        if best_ins != -1:
+
+    for mov in legal_moves(bare):
+        # Erster Halbzug: Mich maximieren
+        bbs_mem = bbs[:]
+        bare_mem = bare[:]
+        move(bbs_mem, bare_mem, me, mov)
+        if has_won(bbs_mem[me]):
+            best_val = INF
+            best_mov = mov
             break
-    if best_ins == -1:
-        best_ins = choice(legal_inserts(bare))
-    return best_ins
+        # Zweiter Halbzug: Gegner minimieren
+        val = minimizing(bbs_mem, bare_mem, count+1, DEPTH)
+        if val > best_val:
+            best_val = val
+            best_mov = mov
+
+    if best_mov == -1:
+        best_mov = select(legal_moves(bare))
+
+    return best_mov
 
 
 def grid(bbs, topline=False):
@@ -218,24 +207,12 @@ def grid(bbs, topline=False):
     return txt
 
 
-# INIT
-bbs = [0, 0]
-bare = [(1 << x) for x in [0, 7, 14, 21, 28, 35, 42]]
-names = ["GELB", "ROT"]
-count = 0
-wp1 = [15 << y*7+x for y in range(7) for x in range(3)]        # |
-wp2 = [2113665 << y*7+x for y in range(4) for x in range(6)]   # -
-wp3 = [16843009 << y*7+x for y in range(4) for x in range(3)]  # /
-wp4 = [2130440 << y*7+x for y in range(4) for x in range(3)]   # \
-win_positions = [*wp1, *wp2, *wp3, *wp4]
-
 # MAIN
 while(count < SIZE):
-    playables = legal_inserts(bare)
-    player = count & 1
+    playables = legal_moves(bare)
     txt = "\nVIER GEWINNT\n============\n" + grid(bbs)
     txt += "\nZug: " + str(count+1)
-    txt += "\n"+names[player]+" ("+SIGNS[player]+") ist am Zug."
+    txt += "\n"+names[me]+" ("+SIGNS[me]+") ist am Zug."
     txt += "\nSpielauswertung: " + str(evaluate(bbs, 0))
     txt += "\nBitte E für Spiel-ENDE, A für Automatischer Zug "
     txt += "oder die Ziffer unter dem gewünschten Slot eingeben"
@@ -246,20 +223,20 @@ while(count < SIZE):
     if txt in ['a', 'A']:
         print("KI wird gestartet")
         timer_start = timer()
-        txt = str(find_best_insert(bbs, bare, count, 5))
+        txt = str(find_best_move(bbs, bare, count))
         timer_stop = timer()
         timer_diff = timer_stop - timer_start
         print("Rechendauer: " + str(timer_diff))
     if txt in [str(x) for x in playables]:
         slot = int(txt)
-        insert(bbs, bare, player, slot)
-        if (has_won(bbs[player])):
+        move(bbs, bare, me, slot)
+        if (has_won(bbs[me])):
             print("\nVIER GEWINNT\n============\n" + grid(bbs))
             print("\nSpielauswertung: " + str(evaluate(bbs, 0)))
-            input(names[player] + " hat gewonnen...")
+            input(names[me] + " hat gewonnen...")
             print(grid(all_win_positions(bbs)))
             break
         timer_diff = 0.0
-        count += 1     # switch player
+        (count, me, you) = (count+1, me ^ 1, you ^ 1)     # Nächster Halbzug
     else:
         input("\nFehleingabe...")
