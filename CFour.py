@@ -21,7 +21,7 @@ DEPTH = 5
 # Globale Variablen
 count = 0
 me = 0
-you = 1
+he = 1
 bbs = [0, 0]
 bare = [(1 << x) for x in [0, 7, 14, 21, 28, 35, 42]]
 names = ["GELB", "ROT"]
@@ -157,8 +157,8 @@ def minimizing(bbs, bare, count, depth):
     for mov in legal_moves(bare):
         bbs_mem = bbs[:]
         bare_mem = bare[:]
-        move(bbs_mem, bare_mem, you, mov)
-        if has_won(bbs_mem[you]):
+        move(bbs_mem, bare_mem, he, mov)
+        if has_won(bbs_mem[he]):
             worst_val = -INF
             break
         # dritter, fünfter, siebter, ... Halbzug
@@ -239,6 +239,6 @@ while(count < SIZE):
             print(grid(all_win_positions(bbs)))
             break
         timer_diff = 0.0
-        (count, me, you) = (count+1, me ^ 1, you ^ 1)     # Nächster Halbzug
+        (count, me, he) = (count+1, me ^ 1, he ^ 1)     # Nächster Halbzug
     else:
         input("\nFehleingabe...")
