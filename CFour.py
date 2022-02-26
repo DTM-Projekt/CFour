@@ -3,7 +3,6 @@
 # Das Spiel "Vier Gewinnt" programmiert in Python.
 # Diese Version ist funktional programmiert.
 
-from select import select
 from timeit import default_timer as timer
 from random import choice
 
