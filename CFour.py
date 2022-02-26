@@ -216,6 +216,8 @@ while(count < SIZE):
     txt += "\nZug: " + str(count+1)
     txt += "\n"+names[me]+" ("+SIGNS[me]+") ist am Zug."
     txt += "\nSpielauswertung: " + str(evaluate(bbs, 0))
+    txt += "\nbbs[0]: " + str(bbs[0])
+    txt += "\nbbs[1]: " + str(bbs[1])
     txt += "\nBitte E für Spiel-ENDE, A für Automatischer Zug "
     txt += "oder die Ziffer unter dem gewünschten Slot eingeben"
     txt += "\nMögliche Slots: " + str(playables) + ": "
