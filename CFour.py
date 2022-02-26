@@ -41,6 +41,14 @@ def move(bbs, bare, me, slot):
     bare[slot] <<= 1
 
 
+def remove(bbs, bare, me, slot):
+    # Einen Spielstein
+    # des aktuellen Spielers (me)
+    # aus einem bestimmten Slot herausnehmen.
+    bbs[me] = bbs[me] ^ bare[slot]
+    bare[slot] >>= 1
+
+
 def legal_moves(bare):
     # Liste mit allen freien Slots.
     return [x for x in range(WIDTH) if not (bare[x] & TOP1)]
