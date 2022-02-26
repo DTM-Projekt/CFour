@@ -186,7 +186,7 @@ def find_best_move(bbs, bare, count):
         if val > best_val:
             best_val, best_mov = val, mov
     if best_val == -INF:
-        best_mov = select(legal_moves(bare))
+        best_mov = choice(legal_moves(bare))
     return best_mov
 
 
