@@ -132,67 +132,62 @@ def all_win_positions(bbs) -> list:
     return [wp_0, wp_1]
 
 
+def maximizing(bbs, bare, count, depth):
+    if count > SIZE or depth == 0:
+        val = evaluate(bbs, me)
+        return val
+    best_val = -INF
+    for mov in legal_moves(bare):
+        bbs_mem = bbs[:]
+        bare_mem = bare[:]
+        move(bbs_mem, bare_mem, me, mov)
+        if has_won(bbs_mem[me]):
+            best_val = INF
+            break
+        # vierter, sechster, achter, ... Halbzug
+        val = minimizing(bbs_mem, bare_mem, count+1, depth-1)
+        best_val = max(val, best_val)
+    return best_val
+
+
+def minimizing(bbs, bare, count, depth):
+    if count > SIZE or depth == 0:
+        val = evaluate(bbs, me)
+        return val
+    worst_val = INF
+    for mov in legal_moves(bare):
+        bbs_mem = bbs[:]
+        bare_mem = bare[:]
+        move(bbs_mem, bare_mem, you, mov)
+        if has_won(bbs_mem[you]):
+            worst_val = -INF
+            break
+        # dritter, fünfter, siebter, ... Halbzug
+        val = maximizing(bbs_mem, bare_mem, count+1, depth-1)
+        worst_val = min(val, worst_val)
+    return worst_val
+
+
 def find_best_move(bbs, bare, count):
     # Finde den 'besten' Slot für den aktuellen Spieler.
     # Ich habe den MiniMax-Algorithmus auf zwei unabhängige,
     # sich gegenseitig rekursiv aufrufende Funktionen aufgeteilt.
     # So wird eine if-Clause während der Laufzeit eingespart.
     # Der Nachteil ist ein (etwas) aufgeblähter Code.
-    def maximizing(bbs, bare, count, depth):
-        if count > SIZE or depth == 0:
-            val = evaluate(bbs, me)
-            return val
-        best_val = -INF
-        for mov in legal_moves(bare):
-            bbs_mem = bbs[:]
-            bare_mem = bare[:]
-            move(bbs_mem, bare_mem, me, mov)
-            if has_won(bbs_mem[me]):
-                best_val = INF
-                break
-            # vierter, sechster, achter, ... Halbzug
-            val = minimizing(bbs_mem, bare_mem, count+1, depth-1)
-            best_val = max(val, best_val)
-        return best_val
-
-    def minimizing(bbs, bare, count, depth):
-        if count > SIZE or depth == 0:
-            val = evaluate(bbs, me)
-            return val
-        worst_val = INF
-        for mov in legal_moves(bare):
-            bbs_mem = bbs[:]
-            bare_mem = bare[:]
-            move(bbs_mem, bare_mem, you, mov)
-            if has_won(bbs_mem[you]):
-                worst_val = -INF
-                break
-            # dritter, fünfter, siebter, ... Halbzug
-            val = maximizing(bbs_mem, bare_mem, count+1, depth-1)
-            worst_val = min(val, worst_val)
-        return worst_val
-
-    best_mov = -1
-    best_val = -INF
-
+    best_mov, best_val = -1, -INF
     for mov in legal_moves(bare):
-        # Erster Halbzug: Mich maximieren
-        bbs_mem = bbs[:]
-        bare_mem = bare[:]
+        bbs_mem, bare_mem = bbs[:], bare[:]
+        # Erster Halbzug: short cut auf Sieg
         move(bbs_mem, bare_mem, me, mov)
         if has_won(bbs_mem[me]):
-            best_val = INF
-            best_mov = mov
+            best_val, best_mov = INF, mov
             break
-        # Zweiter Halbzug: Gegner minimieren
+        # Zweiter Halbzug: minimiere Gegner
         val = minimizing(bbs_mem, bare_mem, count+1, DEPTH)
         if val > best_val:
-            best_val = val
-            best_mov = mov
-
-    if best_mov == -1:
+            best_val, best_mov = val, mov
+    if best_val == -INF:
         best_mov = select(legal_moves(bare))
-
     return best_mov
 
 
