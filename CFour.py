@@ -98,6 +98,8 @@ def evaluate_slots(bbs) -> tuple([float, float]):
 
 def evaluate(bbs, color) -> float:
     # Bewertung der Spielposition aus Sicht eines bestimmten Spielers.
+    # Dieser Teilalgorithmus erzeugt die eigentliche Spielstärke durch
+    # eine bestmögliche Bewertung einer Spielposition.
     if has_won(bbs[0]):
         return INF
     if has_won(bbs[1]):
@@ -145,6 +147,8 @@ def maximizing(bbs, bare, count, depth, alpha, beta):
         # vierter, sechster, achter, ... Halbzug
         val = minimizing(bbs_mem, bare_mem, count+1, depth-1, alpha, beta)
         alpha = max(val, alpha)
+        # keine Verfolgung von Zweigen,
+        # in denen sich die eigene Stellung verschlechtert
         if beta <= alpha:
             break
     return alpha
@@ -164,6 +168,8 @@ def minimizing(bbs, bare, count, depth, alpha, beta):
         # dritter, fünfter, siebter, ... Halbzug
         val = maximizing(bbs_mem, bare_mem, count+1, depth-1, alpha, beta)
         beta = min(val, beta)
+        # keine Verfolgung von Zweigen,
+        # in denen sich die Stellung des Gegners verbessert
         if beta <= alpha:
             break
     return beta
