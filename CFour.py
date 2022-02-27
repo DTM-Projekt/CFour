@@ -131,40 +131,42 @@ def all_win_positions(bbs) -> list:
     return [wp_0, wp_1]
 
 
-def maximizing(bbs, bare, count, depth):
+def maximizing(bbs, bare, count, depth, alpha, beta):
     if count > SIZE or depth == 0:
         val = evaluate(bbs, me)
         return val
-    best_val = -INF
     for mov in legal_moves(bare):
         bbs_mem = bbs[:]
         bare_mem = bare[:]
         move(bbs_mem, bare_mem, me, mov)
         if has_won(bbs_mem[me]):
-            best_val = INF
+            alpha = INF
             break
         # vierter, sechster, achter, ... Halbzug
-        val = minimizing(bbs_mem, bare_mem, count+1, depth-1)
-        best_val = max(val, best_val)
-    return best_val
+        val = minimizing(bbs_mem, bare_mem, count+1, depth-1, alpha, beta)
+        alpha = max(val, alpha)
+        if beta <= alpha:
+            break
+    return alpha
 
 
-def minimizing(bbs, bare, count, depth):
+def minimizing(bbs, bare, count, depth, alpha, beta):
     if count > SIZE or depth == 0:
         val = evaluate(bbs, me)
         return val
-    worst_val = INF
     for mov in legal_moves(bare):
         bbs_mem = bbs[:]
         bare_mem = bare[:]
         move(bbs_mem, bare_mem, he, mov)
         if has_won(bbs_mem[he]):
-            worst_val = -INF
+            beta = -INF
             break
         # dritter, fünfter, siebter, ... Halbzug
-        val = maximizing(bbs_mem, bare_mem, count+1, depth-1)
-        worst_val = min(val, worst_val)
-    return worst_val
+        val = maximizing(bbs_mem, bare_mem, count+1, depth-1, alpha, beta)
+        beta = min(val, beta)
+        if beta <= alpha:
+            break
+    return beta
 
 
 def find_best_move(bbs, bare, count):
@@ -182,7 +184,7 @@ def find_best_move(bbs, bare, count):
             best_val, best_mov = INF, mov
             break
         # Zweiter Halbzug: minimiere Gegner
-        val = minimizing(bbs_mem, bare_mem, count+1, DEPTH)
+        val = minimizing(bbs_mem, bare_mem, count+1, DEPTH, -INF, INF)
         if val > best_val:
             best_val, best_mov = val, mov
     if best_val == -INF:
