@@ -5,6 +5,7 @@
 
 from timeit import default_timer as timer
 from random import choice
+from random import shuffle
 
 # Konstanten
 INF = 1000000
@@ -182,7 +183,11 @@ def find_best_move(bbs, bare, count):
     # So wird eine if-Clause während der Laufzeit eingespart.
     # Der Nachteil ist ein (etwas) aufgeblähter Code.
     best_mov, best_val = -1, -INF
-    for mov in legal_moves(bare):
+    # Gegen die programmierte Linkslastigkeit der KI
+    # hilft ein wenig Zufall
+    moves = legal_moves(bare)
+    shuffle(moves)
+    for mov in moves:
         bbs_mem, bare_mem = bbs[:], bare[:]
         # Erster Halbzug: short cut auf Sieg
         move(bbs_mem, bare_mem, me, mov)
