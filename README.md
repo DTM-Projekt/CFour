@@ -2,6 +2,20 @@
 
 Das Spiel __Vier Gewinnt__ programmiert in Python.
 
+## News
+
+### 07.09.2023
+Nachdem mit der Version "Butterworth" die Vorgaben für das Drehtürprojekt erfüllt und damit das eigentliche Projekt abgeschlossen ist,
+möchte ich hiermit auf die Branches "dev" und "dev-alphabeta" hinweisen:
+
+[dev](https://github.com/DTM-Projekt/CFour/tree/dev)
+* der Minimax-Algorithmus wird zur (intelligenten) Zugwahl herangezogen
+
+[dev-alpha-beta](https://github.com/DTM-Projekt/CFour/tree/dev-alpha-beta)
+* der Minimax-Algorithmus wird durch einen Alpha-Bata-Cut ergänzt
+* Zugfolgenäste, die schon zu Beginn der Suche eine Verschlechterung der eigenen Position bedeuten, werden nicht weiter verfolgt
+* der Geschwindigkeitsgewinn bei gleicher Spielstärke liegt über den Daumen bei ca. 400% 
+
 ## Abhängigkeiten
 Für die Ausführung des Programms __Vier Gewinnt__
 muss auf dem Zielrechner __Python__ in der __Version 3__ installiert sein.
